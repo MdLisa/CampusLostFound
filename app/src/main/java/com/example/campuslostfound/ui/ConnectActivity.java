@@ -1,6 +1,7 @@
 package com.example.campuslostfound.ui;
 
 import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,6 +37,7 @@ public class ConnectActivity extends AppCompatActivity {
     private Button connectButton;
     private Button createButton;
     private Button restoreButton;
+    private Button businessButton;
     private LanApiClient client;
     private ClientConnectionStore store;
     private LanApiClient.RequestHandle request;
@@ -77,6 +79,7 @@ public class ConnectActivity extends AppCompatActivity {
         connectButton = findViewById(R.id.connect_host);
         createButton = findViewById(R.id.create_session);
         restoreButton = findViewById(R.id.restore_session);
+        businessButton = findViewById(R.id.open_business_debug);
         store = ClientConnectionStore.getInstance(this);
         client = new LanApiClient(getApplicationContext());
         if (savedInstanceState == null) {
@@ -96,6 +99,11 @@ public class ConnectActivity extends AppCompatActivity {
         connectButton.setOnClickListener(view -> requestConnection());
         createButton.setOnClickListener(view -> createSession());
         restoreButton.setOnClickListener(view -> restoreSession());
+        businessButton.setOnClickListener(view -> {
+            if (!busy && connectedAddress != null && store.hasIdentity()) {
+                startActivity(new Intent(this, BusinessDebugActivity.class));
+            }
+        });
     }
 
     @Override
@@ -192,6 +200,7 @@ public class ConnectActivity extends AppCompatActivity {
                 nicknameControls.setVisibility(View.GONE);
                 restoreButton.setVisibility(View.VISIBLE);
                 nicknameInput.setText("");
+                businessButton.setVisibility(View.VISIBLE);
                 identityResult.setText(getString(created ? R.string.session_created : R.string.session_restored,
                         member.optLong("id"), member.optString("nickname")));
             }
@@ -220,6 +229,7 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private void showNickname(int message) {
+        businessButton.setVisibility(View.GONE);
         nicknameControls.setVisibility(View.VISIBLE);
         restoreButton.setVisibility(View.GONE);
         identityResult.setText(message);
@@ -233,6 +243,7 @@ public class ConnectActivity extends AppCompatActivity {
             nicknameInput.setEnabled(!value);
             createButton.setEnabled(!value);
             restoreButton.setEnabled(!value);
+            businessButton.setEnabled(!value);
         }
     }
 

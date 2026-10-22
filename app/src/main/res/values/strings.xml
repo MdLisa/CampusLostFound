@@ -43,4 +43,53 @@
     <string name="session_restored">身份恢复成功\n用户 ID：%1$d\n昵称：%2$s</string>
     <string name="session_invalid">原身份已失效，请重新填写昵称。</string>
     <string name="session_failed">身份操作失败：%1$s</string>
+    <string name="debug_open">进入业务联调</string>
+    <string name="debug_heading">无图业务联调</string>
+    <string name="debug_identity_value">当前用户 ID：%1$d　昵称：%2$s</string>
+    <string name="debug_identity_failed">身份验证失败：%1$s\n请返回连接页面，重新检测并恢复身份。</string>
+    <string name="debug_instructions">选择操作，填写需要的信息后发送。结果中的 id 是帖子或申请编号，可复制用于后续操作。本页供开发联调，尚未加入图片功能。</string>
+    <string name="debug_operation_label">选择操作</string>
+    <string name="debug_type_label">帖子类型</string>
+    <string name="debug_category_label">物品分类</string>
+    <string name="debug_status_label">状态筛选</string>
+    <string name="debug_keyword_hint">标题关键词（留空不筛选）</string>
+    <string name="debug_title_hint">帖子标题（2～40 字符）</string>
+    <string name="debug_description_hint">物品描述（5～500 字符）</string>
+    <string name="debug_location_hint">地点（2～60 字符）</string>
+    <string name="debug_post_id">帖子 ID</string>
+    <string name="debug_claim_id">申请 ID</string>
+    <string name="debug_id_hint">填写查询结果中的数字 ID</string>
+    <string name="debug_id_invalid">请输入大于 0 的数字 ID</string>
+    <string name="debug_proof_hint">特征证明或拾获线索（10～300 字符）</string>
+    <string name="debug_contact_hint">联系方式（3～80 字符）</string>
+    <string name="debug_reason_hint">拒绝原因（2～100 字符）</string>
+    <string name="debug_sample_title">图书馆钥匙招领</string>
+    <string name="debug_sample_description">今天中午在图书馆二楼捡到一串钥匙，请说明特征。</string>
+    <string name="debug_sample_location">图书馆二楼</string>
+    <string name="debug_sample_proof">钥匙有三把并挂着一个蓝色小熊挂件</string>
+    <string name="debug_sample_contact">微信 campus_test</string>
+    <string name="debug_sample_reason">物品特征不匹配</string>
+    <string name="debug_send">发送请求</string>
+    <string name="debug_sending">正在发送，请稍候…</string>
+    <string name="debug_response">HTTP %1$d\n%2$s</string>
+    <string name="debug_network_error">请求失败：%1$s</string>
+    <string name="debug_display_error">无法生成或显示请求结果</string>
+    <string name="debug_publish_filter_required">发布时请选择具体类型和分类，不能选择“全部”。</string>
+    <string-array name="debug_operations">
+        <item>发布无图帖子</item><item>浏览／搜索帖子</item><item>查看帖子详情</item>
+        <item>我的发布</item><item>提交认领／拾获线索</item><item>我的申请</item>
+        <item>查看帖子收到的申请</item><item>确认完成交接</item><item>拒绝申请</item>
+        <item>取消我的申请</item><item>标记站外找回／归还</item><item>关闭帖子</item>
+    </string-array>
+    <string-array name="debug_types"><item>全部类型</item><item>招领 FOUND</item><item>寻物 LOST</item></string-array>
+    <string-array name="debug_categories">
+        <item>全部分类</item><item>证件卡片</item><item>电子产品</item><item>钥匙</item>
+        <item>书籍资料</item><item>生活用品</item><item>其他</item>
+    </string-array>
+    <string-array name="debug_public_statuses"><item>全部公开状态</item><item>待解决 OPEN</item><item>已解决 RESOLVED</item></string-array>
+    <string-array name="debug_my_post_statuses"><item>全部状态</item><item>待解决 OPEN</item><item>已解决 RESOLVED</item><item>已关闭 CLOSED</item></string-array>
+    <string-array name="debug_claim_statuses">
+        <item>全部状态</item><item>待处理 PENDING</item><item>已完成 ACCEPTED</item>
+        <item>已拒绝 REJECTED</item><item>已取消 CANCELLED</item>
+    </string-array>
 </resources>

@@ -92,6 +92,12 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:text="@string/session_restore" />
+            <Button
+                android:id="@+id/open_business_debug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/debug_open" />
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
