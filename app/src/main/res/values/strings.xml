@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">CampusLostFound</string>
+    <string name="main_title">校园寻物站</string>
+    <string name="main_step_one">第一步：手机主机连接测试</string>
+    <string name="main_open_host">进入主机测试</string>
+    <string name="host_title">主机连接测试</string>
+    <string name="host_stopped">主机已停止，点击开启主机开始测试</string>
+    <string name="host_running">主机运行中 · 端口 8080</string>
+    <string name="host_starting">正在开启主机…</string>
+    <string name="host_stopping">正在停止主机…</string>
+    <string name="host_start">开启主机</string>
+    <string name="host_stop">停止主机</string>
+    <string name="host_refresh">刷新地址</string>
+    <string name="host_address_label">本机局域网地址（有多个时请核对 Wi-Fi 或热点网段）</string>
+    <string name="host_no_address">未找到可展示的局域网 IPv4 地址。请连接 Wi-Fi，或在手机网络设置中核对热点地址后手动测试。</string>
+    <string name="host_test_hint">让另一台手机连接同一 Wi-Fi 或热点，在浏览器中输入上面的地址，并在末尾加上 /api/ping。\n\n例如：http://192.168.1.20:8080/api/ping（示例地址，请替换为本机实际地址）。\n\n测试时保持本页面在前台。切换到其他应用、返回或旋转屏幕后服务会停止，需要手动重新开启。更换网络后请刷新地址。</string>
+    <string name="host_permission_request">请允许访问附近设备／局域网，主机才能接收其他手机的连接。</string>
+    <string name="host_permission_denied">未获得局域网访问权限。请重新点击开启并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
+    <string name="host_start_failed">主机开启失败：%1$s\n请检查局域网权限及 8080 端口是否被其他服务占用。</string>
+    <string name="host_unknown_error">未知错误</string>
 </resources>
