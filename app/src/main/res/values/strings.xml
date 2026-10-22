@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">CampusLostFound</string>
     <string name="main_title">校园寻物站</string>
-    <string name="main_step_one">第一步：手机主机连接测试</string>
     <string name="main_open_host">进入主机测试</string>
     <string name="host_title">主机连接测试</string>
     <string name="host_stopped">主机已停止，点击开启主机开始测试</string>
@@ -18,4 +17,17 @@
     <string name="host_permission_denied">未获得局域网访问权限。请重新点击开启并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
     <string name="host_start_failed">主机开启失败：%1$s\n请检查局域网权限及 8080 端口是否被其他服务占用。</string>
     <string name="host_unknown_error">未知错误</string>
+    <string name="main_step_two">手机主机与客户端连接测试</string>
+    <string name="main_open_client">连接主机</string>
+    <string name="client_title">连接主机</string>
+    <string name="client_address_label">主机地址（填写另一台手机显示的地址）</string>
+    <string name="client_address_hint">http://192.168.1.20:8080</string>
+    <string name="client_connect">检测并连接</string>
+    <string name="client_idle">尚未检测，请输入地址后点击按钮。</string>
+    <string name="client_connecting">正在检测主机，请稍候…</string>
+    <string name="client_connected">连接成功\n应用：%1$s\n协议版本：%2$d\n主机标识：%3$s</string>
+    <string name="client_failed">连接失败：%1$s</string>
+    <string name="client_permission_request">请允许局域网／附近设备权限，才能连接主机。</string>
+    <string name="client_permission_denied">未获得局域网访问权限。请再次点击检测并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
+    <string name="client_hint">请让另一台手机开启主机，并保持主机页面在前台。两台手机需要处于可互访的同一 Wi-Fi 或热点网络。\n\n地址只填 http://IP:端口，不加 /api/ping。本机会记住最近使用的地址；更换地址或主机时会清除旧身份。\n\n本步骤验证连接，昵称进入功能将在后续步骤加入。</string>
 </resources>

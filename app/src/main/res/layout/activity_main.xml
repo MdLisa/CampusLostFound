@@ -16,11 +16,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="@string/main_step_one" />
+        android:text="@string/main_step_two" />
     <Button
         android:id="@+id/open_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/main_open_host" />
+    <Button
+        android:id="@+id/open_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/main_open_client" />
 </LinearLayout>
