@@ -65,6 +65,40 @@ public final class BusinessFlowTest {
         assertEquals("REJECTED", mine.getJSONArray("items").getJSONObject(0).getString("status"));
     }
 
+    @Test public void concurrentConfirmOnlyAcceptsOne() throws Exception {
+        long postId = publish();
+        long first = claim(postId, 2), second = claim(postId, 3);
+        java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+        java.util.concurrent.CountDownLatch start = new java.util.concurrent.CountDownLatch(1);
+        try {
+            java.util.concurrent.Future<Integer> a = pool.submit(() -> { start.await(); return call("POST", "/api/claims/" + first + "/confirm", 1, new JSONObject()).status; });
+            java.util.concurrent.Future<Integer> b = pool.submit(() -> { start.await(); return call("POST", "/api/claims/" + second + "/confirm", 1, new JSONObject()).status; });
+            start.countDown();
+            assertEquals(609, a.get() + b.get()); // exactly 200 + 409
+            JSONObject received = call("GET", "/api/posts/" + postId + "/claims", 1, new JSONObject()).json.getJSONObject("data");
+            int accepted = 0;
+            for (int i = 0; i < 2; i++) if ("ACCEPTED".equals(received.getJSONArray("items").getJSONObject(i).getString("status"))) accepted++;
+            assertEquals(1, accepted);
+        } finally { pool.shutdownNow(); }
+    }
+
+    @Test public void concurrentSubmitAndCloseCannotLeavePending() throws Exception {
+        long postId = publish();
+        java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+        java.util.concurrent.CountDownLatch start = new java.util.concurrent.CountDownLatch(1);
+        try {
+            java.util.concurrent.Future<Integer> submit = pool.submit(() -> { start.await(); return call("POST", "/api/posts/" + postId + "/claims", 2, claimBody()).status; });
+            java.util.concurrent.Future<Integer> close = pool.submit(() -> { start.await(); return call("POST", "/api/posts/" + postId + "/close", 1, new JSONObject()).status; });
+            start.countDown();
+            int submitStatus = submit.get();
+            assertTrue(submitStatus == 200 || submitStatus == 409);
+            assertEquals(200, (int) close.get());
+            JSONObject received = call("GET", "/api/posts/" + postId + "/claims", 1, new JSONObject()).json.getJSONObject("data");
+            for (int i = 0; i < received.getJSONArray("items").length(); i++)
+                assertFalse("PENDING".equals(received.getJSONArray("items").getJSONObject(i).getString("status")));
+        } finally { pool.shutdownNow(); }
+    }
+
     private long publish() throws Exception {
         JSONObject body = new JSONObject().put("type", "FOUND").put("title", "钥匙招领").put("description", "图书馆二楼捡到钥匙").put("category", "KEYS").put("location", "图书馆二楼");
         return call("POST", "/api/posts", 1, body).json.getJSONObject("data").getLong("id");
