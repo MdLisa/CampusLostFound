@@ -44,6 +44,55 @@
             android:text="@string/client_idle"
             android:textIsSelectable="true"
             android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/session_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/session_title"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/identity_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:accessibilityLiveRegion="polite"
+                android:textIsSelectable="true"
+                android:textSize="16sp" />
+            <LinearLayout
+                android:id="@+id/nickname_controls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/nickname_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:hint="@string/session_nickname_hint"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:saveEnabled="false"
+                    android:importantForAutofill="no" />
+                <Button
+                    android:id="@+id/create_session"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/session_create" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/restore_session"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/session_restore" />
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

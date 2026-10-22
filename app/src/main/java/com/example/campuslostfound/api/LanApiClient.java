@@ -102,6 +102,20 @@ public final class LanApiClient implements AutoCloseable {
         }
     }
 
+    public RequestHandle createSession(String nickname, Callback callback) {
+        ensureOpen();
+        try {
+            return request("POST", "/api/sessions",
+                    new JSONObject().put("nickname", nickname), callback);
+        } catch (JSONException e) {
+            return fail(callback, "无法生成昵称请求");
+        }
+    }
+
+    public RequestHandle restoreSession(Callback callback) {
+        return request("GET", "/api/session", null, callback);
+    }
+
     private RequestHandle enqueue(String method, String path, String payload,
             ClientConnectionStore.Snapshot selected, boolean ping, Callback callback) {
         if (callback == null) {
@@ -120,6 +134,7 @@ public final class LanApiClient implements AutoCloseable {
                 }
                 JSONObject data = null;
                 ApiError error = null;
+                ClientConnectionStore.Snapshot deliveryContext = selected;
                 try {
                     if (!store.isCurrent(selected)) {
                         throw new ClientFailure(0, "主机连接已改变，请重新操作");
@@ -138,7 +153,15 @@ public final class LanApiClient implements AutoCloseable {
                             throw new ClientFailure(0, "主机连接已改变，请重新检测");
                         }
                     }
+                    if (!ping && "POST".equals(method) && "/api/sessions".equals(path)) {
+                        deliveryContext = store.saveIdentity(selected, data, true);
+                    } else if (!ping && "GET".equals(method) && "/api/session".equals(path)) {
+                        deliveryContext = store.saveIdentity(selected, data, false);
+                    }
                 } catch (ClientFailure e) {
+                    if (e.code == 401 && !selected.token.isEmpty()) {
+                        deliveryContext = store.clearIdentityIfCurrent(selected);
+                    }
                     error = new ApiError(e.code, e.getMessage());
                 } catch (SocketTimeoutException e) {
                     error = new ApiError(0, "连接或读取超时，请确认主机运行中且两台手机可以互访");
@@ -153,7 +176,7 @@ public final class LanApiClient implements AutoCloseable {
                 } catch (IOException e) {
                     error = new ApiError(0, "网络请求失败，请检查网络及主机状态");
                 }
-                deliver(handle, callback, selected, data, error);
+                deliver(handle, callback, deliveryContext, data, error);
             });
         } catch (RejectedExecutionException e) {
             deliver(handle, callback, null, null, new ApiError(0, "网络工具已关闭，请重新进入页面"));
@@ -177,6 +200,9 @@ public final class LanApiClient implements AutoCloseable {
         try {
             if (payload != null) {
                 byte[] bytes = payload.getBytes(StandardCharsets.UTF_8);
+                if (bytes.length > 1024 * 1024) {
+                    throw new ClientFailure(0, "请求体不能超过 1 MB");
+                }
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                 connection.setFixedLengthStreamingMode(bytes.length);

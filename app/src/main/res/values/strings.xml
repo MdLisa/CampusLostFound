@@ -29,5 +29,18 @@
     <string name="client_failed">连接失败：%1$s</string>
     <string name="client_permission_request">请允许局域网／附近设备权限，才能连接主机。</string>
     <string name="client_permission_denied">未获得局域网访问权限。请再次点击检测并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
-    <string name="client_hint">请让另一台手机开启主机，并保持主机页面在前台。两台手机需要处于可互访的同一 Wi-Fi 或热点网络。\n\n地址只填 http://IP:端口，不加 /api/ping。本机会记住最近使用的地址；更换地址或主机时会清除旧身份。\n\n本步骤验证连接，昵称进入功能将在后续步骤加入。</string>
+    <string name="client_hint">请让另一台手机开启主机，并保持主机页面在前台。两台手机需要处于可互访的同一 Wi-Fi 或热点网络。\n\n地址只填 http://IP:端口，不加 /api/ping。本机会记住最近使用的地址；更换地址或主机时会清除旧身份。\n\n连接成功后，首次使用请填写昵称；已有身份会自动验证并恢复。同名昵称仍代表不同用户。</string>
+    <string name="client_address_changed">地址已修改，请重新检测并连接主机。</string>
+    <string name="session_title">本机用户身份</string>
+    <string name="session_new_user">尚无此主机的身份，请填写昵称进入。</string>
+    <string name="session_nickname_hint">昵称（1～20 个字符）</string>
+    <string name="session_nickname_invalid">昵称去除首尾空白后须为 1～20 个字符</string>
+    <string name="session_create">使用昵称进入</string>
+    <string name="session_restore">验证当前身份</string>
+    <string name="session_creating">正在创建身份，请稍候…</string>
+    <string name="session_restoring">正在验证已保存的身份…</string>
+    <string name="session_created">身份创建成功\n用户 ID：%1$d\n昵称：%2$s</string>
+    <string name="session_restored">身份恢复成功\n用户 ID：%1$d\n昵称：%2$s</string>
+    <string name="session_invalid">原身份已失效，请重新填写昵称。</string>
+    <string name="session_failed">身份操作失败：%1$s</string>
 </resources>

@@ -2,6 +2,8 @@ package com.example.campuslostfound.server;
 
 import android.content.Context;
 
+import com.example.campuslostfound.data.AppDbHelper;
+
 import java.io.IOException;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -22,7 +24,9 @@ public final class ServerManager {
             return;
         }
         stop();
-        LanServer candidate = new LanServer(HostIdentity.getOrCreate(context));
+        AppDbHelper helper = AppDbHelper.getInstance(context);
+        helper.initialize();
+        LanServer candidate = new LanServer(HostIdentity.getOrCreate(context), new SessionStore(helper));
         try {
             candidate.start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
             server = candidate;
@@ -43,4 +47,3 @@ public final class ServerManager {
         return server != null && server.isAlive();
     }
 }
-
