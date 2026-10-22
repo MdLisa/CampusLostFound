@@ -37,18 +37,19 @@ public final class PostHandler {
         optional(category, "CARD", "ELECTRONICS", "KEYS", "BOOKS", "DAILY", "OTHER");
         optional(status, "OPEN", "RESOLVED");
         if (keyword != null) { keyword = keyword.trim(); if (keyword.length() > 40) throw new BusinessException(400, "关键词过长"); }
-        return posts.list(port.readableDatabase(), null, type, category, keyword, status);
+        final String search = keyword;
+        return port.read(db -> posts.list(db, null, type, category, search, status));
     }
 
     public JSONObject get(long id) throws Exception {
-        JSONObject post = posts.get(port.readableDatabase(), id);
+        JSONObject post = port.read(db -> posts.get(db, id));
         if (post == null) throw new BusinessException(404, "帖子不存在");
         return post;
     }
 
     public JSONObject mine(long memberId, String status) throws Exception {
         requireMember(memberId); optional(status, "OPEN", "RESOLVED", "CLOSED");
-        return posts.list(port.readableDatabase(), memberId, null, null, null, status);
+        return port.read(db -> posts.list(db, memberId, null, null, null, status));
     }
 
     public JSONObject resolve(long memberId, long postId) throws Exception { return finish(memberId, postId, "RESOLVED", "发布者已通过其他途径完成交接"); }

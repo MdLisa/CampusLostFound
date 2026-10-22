@@ -17,11 +17,13 @@ import fi.iki.elonen.NanoHTTPD;
 public final class LanServer extends NanoHTTPD {
     private final String hostId;
     private final SessionStore sessions;
+    private final BusinessHttpAdapter business;
 
-    public LanServer(String hostId, SessionStore sessions) {
+    public LanServer(String hostId, SessionStore sessions, BusinessHttpAdapter business) {
         super(ApiConstants.SERVER_PORT);
         this.hostId = hostId;
         this.sessions = sessions;
+        this.business = business;
     }
 
     @Override
@@ -59,6 +61,8 @@ public final class LanServer extends NanoHTTPD {
             Member member = sessions.requireMemberFromHeader(session.getHeaders().get("authorization"));
             return JsonResponse.success(new JSONObject().put("member", member.toJson()).put("hostId", hostId));
         }
-        return JsonResponse.error(Response.Status.NOT_FOUND, "接口不存在");
+        Response businessResponse = business.handle(session);
+        return businessResponse != null ? businessResponse :
+                JsonResponse.error(Response.Status.NOT_FOUND, "接口不存在");
     }
 }

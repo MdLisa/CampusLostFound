@@ -28,15 +28,17 @@ public final class ClaimHandler {
 
     public JSONObject mine(long memberId, String status) throws Exception {
         PostHandler.requireMember(memberId); status(status);
-        return claims.list(port.readableDatabase(), memberId, null, status);
+        return port.read(db -> claims.list(db, memberId, null, status));
     }
 
     public JSONObject received(long memberId, long postId, String status) throws Exception {
         PostHandler.requireMember(memberId); status(status);
-        JSONObject post = posts.get(port.readableDatabase(), postId);
-        if (post == null) throw new BusinessException(404, "帖子不存在");
-        if (post.getJSONObject("owner").getLong("id") != memberId) throw new BusinessException(403, "无权查看申请");
-        return claims.list(port.readableDatabase(), null, postId, status);
+        return port.read(db -> {
+            JSONObject post = posts.get(db, postId);
+            if (post == null) throw new BusinessException(404, "帖子不存在");
+            if (post.getJSONObject("owner").getLong("id") != memberId) throw new BusinessException(403, "无权查看申请");
+            return claims.list(db, null, postId, status);
+        });
     }
 
     public JSONObject confirm(long memberId, long claimId) throws Exception {

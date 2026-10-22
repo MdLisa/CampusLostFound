@@ -1,34 +1,36 @@
 package com.example.campuslostfound.api;
 
 import android.net.Uri;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-/** Thin business facade. A adapts LanApiClient to Transport; callbacks keep its thread policy. */
+/** Business calls for UI; A's LanApiClient owns address, token, worker and main-thread callbacks. */
 public final class LostFoundApi {
-    public interface Callback { void onResult(int httpStatus, JSONObject response, Exception error); }
-    public interface Transport { void request(String method, String path, JSONObject body, Callback callback); }
-    private final Transport transport;
-    public LostFoundApi(Transport transport) { this.transport = transport; }
+    private final LanApiClient client;
+    public LostFoundApi(LanApiClient client) { this.client = client; }
 
-    public void publishPost(JSONObject body, Callback cb) { post("/api/posts", body, cb); }
-    public void listPosts(String type, String category, String keyword, String status, Callback cb) {
+    public LanApiClient.RequestHandle publishPost(JSONObject body, LanApiClient.Callback cb) { return post("/api/posts", body, cb); }
+    public LanApiClient.RequestHandle listPosts(String type, String category, String keyword, String status, LanApiClient.Callback cb) {
         StringBuilder path = new StringBuilder("/api/posts");
         append(path, "type", type); append(path, "category", category); append(path, "keyword", keyword); append(path, "status", status);
-        get(path.toString(), cb);
+        return get(path.toString(), cb);
     }
-    public void getPost(long id, Callback cb) { get("/api/posts/" + id, cb); }
-    public void getMyPosts(String status, Callback cb) { StringBuilder p = new StringBuilder("/api/me/posts"); append(p, "status", status); get(p.toString(), cb); }
-    public void submitClaim(long postId, JSONObject body, Callback cb) { post("/api/posts/" + postId + "/claims", body, cb); }
-    public void getMyClaims(String status, Callback cb) { StringBuilder p = new StringBuilder("/api/me/claims"); append(p, "status", status); get(p.toString(), cb); }
-    public void getReceivedClaims(long postId, String status, Callback cb) { StringBuilder p = new StringBuilder("/api/posts/" + postId + "/claims"); append(p, "status", status); get(p.toString(), cb); }
-    public void confirmClaim(long id, Callback cb) { post("/api/claims/" + id + "/confirm", new JSONObject(), cb); }
-    public void rejectClaim(long id, String reason, Callback cb) { JSONObject body = new JSONObject(); try { body.put("reason", reason); } catch (Exception e) { cb.onResult(0, null, e); return; } post("/api/claims/" + id + "/reject", body, cb); }
-    public void cancelClaim(long id, Callback cb) { post("/api/claims/" + id + "/cancel", new JSONObject(), cb); }
-    public void resolvePost(long id, Callback cb) { post("/api/posts/" + id + "/resolve", new JSONObject(), cb); }
-    public void closePost(long id, Callback cb) { post("/api/posts/" + id + "/close", new JSONObject(), cb); }
+    public LanApiClient.RequestHandle getPost(long id, LanApiClient.Callback cb) { return get("/api/posts/" + id, cb); }
+    public LanApiClient.RequestHandle getMyPosts(String status, LanApiClient.Callback cb) { StringBuilder p = new StringBuilder("/api/me/posts"); append(p, "status", status); return get(p.toString(), cb); }
+    public LanApiClient.RequestHandle submitClaim(long postId, JSONObject body, LanApiClient.Callback cb) { return post("/api/posts/" + postId + "/claims", body, cb); }
+    public LanApiClient.RequestHandle getMyClaims(String status, LanApiClient.Callback cb) { StringBuilder p = new StringBuilder("/api/me/claims"); append(p, "status", status); return get(p.toString(), cb); }
+    public LanApiClient.RequestHandle getReceivedClaims(long postId, String status, LanApiClient.Callback cb) { StringBuilder p = new StringBuilder("/api/posts/" + postId + "/claims"); append(p, "status", status); return get(p.toString(), cb); }
+    public LanApiClient.RequestHandle confirmClaim(long id, LanApiClient.Callback cb) { return post("/api/claims/" + id + "/confirm", new JSONObject(), cb); }
+    public LanApiClient.RequestHandle rejectClaim(long id, String reason, LanApiClient.Callback cb) {
+        try { return post("/api/claims/" + id + "/reject", new JSONObject().put("reason", reason), cb); }
+        catch (JSONException e) { throw new IllegalStateException(e); }
+    }
+    public LanApiClient.RequestHandle cancelClaim(long id, LanApiClient.Callback cb) { return post("/api/claims/" + id + "/cancel", new JSONObject(), cb); }
+    public LanApiClient.RequestHandle resolvePost(long id, LanApiClient.Callback cb) { return post("/api/posts/" + id + "/resolve", new JSONObject(), cb); }
+    public LanApiClient.RequestHandle closePost(long id, LanApiClient.Callback cb) { return post("/api/posts/" + id + "/close", new JSONObject(), cb); }
 
-    private void get(String path, Callback cb) { transport.request("GET", path, null, cb); }
-    private void post(String path, JSONObject body, Callback cb) { transport.request("POST", path, body, cb); }
+    private LanApiClient.RequestHandle get(String path, LanApiClient.Callback cb) { return client.request("GET", path, null, cb); }
+    private LanApiClient.RequestHandle post(String path, JSONObject body, LanApiClient.Callback cb) { return client.request("POST", path, body, cb); }
     private static void append(StringBuilder path, String key, String value) {
         if (value == null) return;
         path.append(path.indexOf("?") < 0 ? '?' : '&').append(key).append('=').append(Uri.encode(value));

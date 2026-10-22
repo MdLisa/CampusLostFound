@@ -23,7 +23,7 @@ public final class BusinessFlowTest {
         db.execSQL("INSERT INTO members VALUES(1,'发布者'),(2,'申请人甲'),(3,'申请人乙')");
         BusinessPort port = new BusinessPort() {
             final Object lock = new Object();
-            public SQLiteDatabase readableDatabase() { return db; }
+            public <T> T read(Work<T> work) throws Exception { synchronized (lock) { return work.run(db); } }
             public <T> T writeTransaction(Work<T> work) throws Exception {
                 synchronized (lock) {
                     db.beginTransaction();
