@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.nanohttpd)
     implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)

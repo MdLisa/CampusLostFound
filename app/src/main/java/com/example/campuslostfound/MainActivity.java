@@ -1,6 +1,10 @@
 package com.example.campuslostfound;
 
 import android.os.Bundle;
+import android.content.Intent;
+
+import com.example.campuslostfound.ui.HostActivity;
+import com.example.campuslostfound.ui.ConnectActivity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.open_host).setOnClickListener(view ->
+                startActivity(new Intent(this, HostActivity.class)));
+        findViewById(R.id.open_client).setOnClickListener(view ->
+                startActivity(new Intent(this, ConnectActivity.class)));
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
