@@ -19,6 +19,7 @@ public final class BusinessRouter {
         if (!path.startsWith("/api/")) return null;
         String[] p = path.split("/");
         if (!isBusinessPath(p)) return null;
+        if (path.endsWith("/")) return new Reply(404, wrap(false, "接口不存在", null));
         if (body == null) body = new JSONObject();
         final JSONObject requestBody = body;
         try {
@@ -40,6 +41,21 @@ public final class BusinessRouter {
         } catch (BusinessException e) { return new Reply(e.status, wrap(false, e.getMessage(), null)); }
         catch (Exception e) { return new Reply(500, wrap(false, "主机内部错误", null)); }
     }
+    public static boolean isBusinessPath(String path) {
+        return path.startsWith("/api/") && isBusinessPath(path.split("/"));
+    }
+
+    /** 仅已知的私有路由要求身份，未知路径继续由路由器返回 404。 */
+    public static boolean requiresMember(String method, String path) {
+        if ("POST".equals(method)) {
+            return "/api/posts".equals(path)
+                    || path.matches("/api/posts/[^/]+/(claims|resolve|close)")
+                    || path.matches("/api/claims/[^/]+/(confirm|reject|cancel)");
+        }
+        return "GET".equals(method) && ("/api/me/posts".equals(path)
+                || "/api/me/claims".equals(path) || path.matches("/api/posts/[^/]+/claims"));
+    }
+
     private static boolean isBusinessPath(String[] p) {
         return p.length > 2 && (eq(p[2], "posts") || eq(p[2], "claims") ||
                 (eq(p[2], "me") && p.length > 3 && (eq(p[3], "posts") || eq(p[3], "claims"))));

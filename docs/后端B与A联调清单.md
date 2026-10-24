@@ -1,25 +1,17 @@
-# 后端 B 与 A 联调进度（2026-10-22）
+# 后端 B 与 A 联调进度（2026-10-24）
 
-`BranchB` 已合入 `BranchA` 的第三步提交 `106326d`。A 的建表、统一数据库锁、`AppDbHelper.read` / `withWriteTransaction`、token 身份、1 MB JSON 请求读取、`LanApiClient` 均已复用；没有另建数据库、网络客户端或锁。接口字段仍以 `共同接口约定.md` 为准。
+`BranchB` 已合入 A 的第四步提交 `4dd350d`。双方曾分别为同一批业务接口编写接线，现统一保留 A 的 `DatabaseBusinessPort`、`LanApiTransport`、`LanServer` 分发和临时 `BusinessDebugActivity`，删除 B 分支中重复的适配类。帖子与申请的 DAO、Handler 和业务规则仍是 B 的实现。数据库读写只经过 A 的 `AppDbHelper` 和公共锁；身份只由 A 的 `SessionStore` 从 token 解析。未改数据库版本或表结构。
 
-## 已接入
+## 当前可以测试
 
-- `AppDbBusinessPort` 把 B 的 DAO 读写交给 A 的 `AppDbHelper`；读取也在公共锁内完成，多步写操作走同一事务。
-- `BusinessHttpAdapter` 用 A 的 `SessionStore.requireMemberFromHeader` 取得成员 ID，再调用 B 的 `BusinessRouter`。公开帖子列表与详情无需 token；申请和个人接口要求 token。
-- A 的 `LanServer` 仅增加业务分发调用；`ServerManager` 启动时注入同一个 `AppDbHelper`、`SessionStore` 和业务路由。A 后续修改这两个公共类时请保留该接线，不重复读取请求体。
-- `LostFoundApi` 直接包装 A 的 `LanApiClient.request`，沿用其后台线程、主线程回调、token、取消请求和错误处理。
-- 主代码与设备测试源码已在 JDK 25、Android SDK 37 下编译通过。当前没有连接设备，设备测试尚未实际运行。
+最新调试 APK 内含 A 的“进入业务联调”页面，不需要 Postman。主机手机开启服务并保持主机页在前台；另外两台设备连接主机，各用昵称创建独立身份。进入业务联调页后，依次测试无图发布、浏览与详情、提交申请、双方查看申请、确认、拒绝、取消、站外完成及关闭。详细按钮和预期结果见 [第四步联调说明](第四步联调说明.md)。
 
-## 仍需 A 提供图片工具
+构建与测试源码编译只验证代码可构建；目前没有连接设备，本次尚未执行设备测试和跨手机联调。
 
-目前 `ServerManager` 向 `AppDbBusinessPort` 传入 `null` 图片实现，所以无图的 12 个业务接口可接线运行；带图发布会明确返回 500“图片服务尚未接入”。A 完成 `ImageStore` 后，需让它实现或适配 `AppDbBusinessPort.Images` 的 `saveJpeg(base64)` / `deleteJpeg(fileName)`，并在 `ServerManager` 注入。`saveJpeg` 要验证 Base64、JPEG 与解码后 500 KB 上限，格式错误抛 `BusinessException(400, ...)`，过大抛 `BusinessException(413, ...)`；读取 `/images/{fileName}` 仍由 A 路由负责。数据库写入失败时 B 会删除本次新图片。
+## 尚待完成
 
-## 联调验证顺序
+- A 尚未提供 `ImageStore` 和图片读取路由。当前带图发布返回 400“图片功能尚未接入”；无图流程可测。第五步接入时，需要验证 Base64/JPEG、500 KB 解码上限、随机文件名、写库失败清理和跨手机读取。
+- 需要两台以上真实设备或可互访的模拟器验证 SDK 37 局域网权限、身份恢复、状态变化、并发确认及关闭、断网恢复和主机重启持久化。现有 `BusinessFlowTest` 仅有独立内存数据库测试源码，不能代替真实 HTTP 联调。
+- 前端正式页面尚未接入；联调页只是临时测试入口。
 
-1. 两台手机先验证 A 的 ping、创建和恢复身份；SDK 37 的局域网权限须实测。
-2. 用不同身份验证无图发布、公开列表与详情、我的发布；公开响应不能包含 proof/contact。
-3. 验证提交申请、我提交的申请和发布者收到的申请，包括 401/403/404/409。
-4. 验证确认、拒绝、取消、站外完成与关闭。两个申请同时确认，最终最多一个 `ACCEPTED`；提交与关闭并发后，`CLOSED` 帖不能有 `PENDING`。
-5. A 图片工具接入后验证带图发布、跨手机读取、非法图片和超限图片；再让前端用 `LostFoundApi` 接页面。
-
-已编译不等于真机验证。A 的第三步文档记录了其身份和数据库测试范围；上述 B 业务链路仍待设备联调。
+在 GitHub 上合并时应先让 A 的公共变更进入 `master`，再审查 B 的业务变更，避免把同一批 A 文件误认为 B 新写的代码。

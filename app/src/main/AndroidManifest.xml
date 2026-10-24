@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusLostFound">
         <activity
+            android:name=".ui.BusinessDebugActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.ConnectActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

@@ -10,6 +10,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -17,9 +20,9 @@ import fi.iki.elonen.NanoHTTPD;
 public final class LanServer extends NanoHTTPD {
     private final String hostId;
     private final SessionStore sessions;
-    private final BusinessHttpAdapter business;
+    private final BusinessRouter business;
 
-    public LanServer(String hostId, SessionStore sessions, BusinessHttpAdapter business) {
+    public LanServer(String hostId, SessionStore sessions, BusinessRouter business) {
         super(ApiConstants.SERVER_PORT);
         this.hostId = hostId;
         this.sessions = sessions;
@@ -61,8 +64,42 @@ public final class LanServer extends NanoHTTPD {
             Member member = sessions.requireMemberFromHeader(session.getHeaders().get("authorization"));
             return JsonResponse.success(new JSONObject().put("member", member.toJson()).put("hostId", hostId));
         }
-        Response businessResponse = business.handle(session);
-        return businessResponse != null ? businessResponse :
-                JsonResponse.error(Response.Status.NOT_FOUND, "接口不存在");
+        if (BusinessRouter.isBusinessPath(path)) {
+            String method = session.getMethod().name();
+            long memberId = 0;
+            boolean needsMember = BusinessRouter.requiresMember(method, path);
+            if (needsMember) {
+                memberId = sessions.requireMemberFromHeader(
+                        session.getHeaders().get("authorization")).id;
+            }
+            JSONObject body = needsMember && Method.POST.equals(session.getMethod())
+                    ? JsonRequest.readObject(session) : null;
+            if (body != null) {
+                for (String key : new String[]{"userId", "memberId", "ownerId", "applicantId"}) {
+                    if (body.has(key)) {
+                        throw new ApiException(Response.Status.BAD_REQUEST, "请求不能指定操作者身份");
+                    }
+                }
+            }
+            Map<String, String> query = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : session.getParameters().entrySet()) {
+                if (entry.getValue().size() != 1) {
+                    throw new ApiException(Response.Status.BAD_REQUEST, "查询参数不能重复");
+                }
+                query.put(entry.getKey(), entry.getValue().get(0));
+            }
+            BusinessRouter.Reply reply = business.route(method, path, query, body, memberId);
+            if (reply != null) {
+                Response.Status status = Response.Status.lookup(reply.status);
+                if (status == null) {
+                    return JsonResponse.error(Response.Status.INTERNAL_ERROR, "主机内部错误");
+                }
+                Response response = newFixedLengthResponse(
+                        status, "application/json; charset=utf-8", reply.json.toString());
+                response.addHeader("Cache-Control", "no-store");
+                return response;
+            }
+        }
+        return JsonResponse.error(Response.Status.NOT_FOUND, "接口不存在");
     }
 }

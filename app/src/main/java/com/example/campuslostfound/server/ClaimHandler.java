@@ -36,7 +36,8 @@ public final class ClaimHandler {
         return port.read(db -> {
             JSONObject post = posts.get(db, postId);
             if (post == null) throw new BusinessException(404, "帖子不存在");
-            if (post.getJSONObject("owner").getLong("id") != memberId) throw new BusinessException(403, "无权查看申请");
+            if (post.getJSONObject("owner").getLong("id") != memberId)
+                throw new BusinessException(403, "无权查看申请");
             return claims.list(db, null, postId, status);
         });
     }
