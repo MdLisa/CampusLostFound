@@ -27,7 +27,9 @@ import java.util.concurrent.Executors;
 /** A 的临时主机调试页，正式业务页面后续由前端实现。 */
 public class HostActivity extends AppCompatActivity {
     private static final String LOCAL_NETWORK_PERMISSION = "android.permission.ACCESS_LOCAL_NETWORK";
-    private final ExecutorService worker = Executors.newSingleThreadExecutor();
+    // 页面重建也共用一个队列，保证旧页面停止完成后才执行新页面启动。
+    // 队列随进程存在；页面退出仍会排队停止监听。
+    private static final ExecutorService WORKER = Executors.newSingleThreadExecutor();
     private final ServerManager serverManager = ServerManager.getInstance();
     private TextView status;
     private TextView addresses;
@@ -102,7 +104,7 @@ public class HostActivity extends AppCompatActivity {
         busy = true;
         status.setText(R.string.host_starting);
         updateButtons();
-        worker.execute(() -> {
+        WORKER.execute(() -> {
             String error = null;
             try {
                 serverManager.start(getApplicationContext());
@@ -138,7 +140,7 @@ public class HostActivity extends AppCompatActivity {
         busy = true;
         status.setText(R.string.host_stopping);
         updateButtons();
-        worker.execute(() -> {
+        WORKER.execute(() -> {
             serverManager.stop();
             runOnUiThread(() -> {
                 if (generation != lifecycleGeneration) {
@@ -157,7 +159,7 @@ public class HostActivity extends AppCompatActivity {
     private void refreshAddresses() {
         final int generation = lifecycleGeneration;
         refreshButton.setEnabled(false);
-        worker.execute(() -> {
+        WORKER.execute(() -> {
             List<String> candidates = LanAddress.find(getApplicationContext());
             runOnUiThread(() -> {
                 if (visible && generation == lifecycleGeneration) {
@@ -182,14 +184,7 @@ public class HostActivity extends AppCompatActivity {
         lifecycleGeneration++;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // 与启动共用串行队列：即使启动尚未完成，退出后也一定执行停止。
-        worker.execute(serverManager::stop);
+        WORKER.execute(serverManager::stop);
         super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        // shutdown 会完成已排队的停止操作。
-        worker.shutdown();
-        super.onDestroy();
     }
 }

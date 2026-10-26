@@ -5,7 +5,8 @@
         android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/debug_heading" android:textSize="24sp" android:textStyle="bold" />
-        <TextView android:id="@+id/debug_identity" android:layout_width="match_parent"
+        <TextView android:id="@+id/debug_identity"
+            android:saveEnabled="false" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="12dp" android:textSize="16sp" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/debug_instructions" android:layout_marginTop="12dp" />
@@ -26,6 +27,20 @@
             <EditText android:id="@+id/debug_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/debug_title_hint" android:inputType="text" android:importantForAutofill="no" android:text="@string/debug_sample_title"/>
             <EditText android:id="@+id/debug_description" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/debug_description_hint" android:inputType="text" android:importantForAutofill="no" android:text="@string/debug_sample_description"/>
             <EditText android:id="@+id/debug_location" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/debug_location_hint" android:inputType="text" android:importantForAutofill="no" android:text="@string/debug_sample_location"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/debug_image_selection" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <Button android:id="@+id/debug_choose_photo" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_choose" />
+            <Button android:id="@+id/debug_remove_photo" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_remove" />
+            <TextView android:id="@+id/debug_selected_photo_status"
+                android:saveEnabled="false" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_none_selected"
+                android:accessibilityLiveRegion="polite" />
+            <ImageView android:id="@+id/debug_selected_photo" android:layout_width="match_parent"
+                android:layout_height="220dp" android:scaleType="fitCenter" android:visibility="gone"
+                android:contentDescription="@string/photo_selected_description" />
         </LinearLayout>
         <LinearLayout android:id="@+id/debug_id_group" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
@@ -48,8 +63,15 @@
         </LinearLayout>
         <Button android:id="@+id/debug_send" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:text="@string/debug_send" android:enabled="false" />
-        <TextView android:id="@+id/debug_output" android:layout_width="match_parent"
+        <TextView android:id="@+id/debug_output"
+            android:saveEnabled="false" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="16dp"
             android:textIsSelectable="true" android:accessibilityLiveRegion="polite" android:textSize="15sp" />
+        <TextView android:id="@+id/debug_remote_photo_status"
+            android:saveEnabled="false" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" />
+        <ImageView android:id="@+id/debug_remote_photo" android:layout_width="match_parent"
+            android:layout_height="260dp" android:scaleType="fitCenter" android:visibility="gone"
+            android:contentDescription="@string/photo_remote_description" />
     </LinearLayout>
 </ScrollView>

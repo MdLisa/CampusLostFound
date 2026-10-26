@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 public final class BusinessFlowTest {
     private SQLiteDatabase db;
     private BusinessRouter router;
+    private int deletedImages;
     @Before public void setUp() {
         db = SQLiteDatabase.create(null);
         db.execSQL("CREATE TABLE members(id INTEGER PRIMARY KEY,nickname TEXT NOT NULL)");
@@ -32,8 +33,8 @@ public final class BusinessFlowTest {
                     finally { db.endTransaction(); }
                 }
             }
-            public String saveJpeg(String value) { throw new AssertionError("no image in test"); }
-            public void deleteJpeg(String name) { }
+            public String saveJpeg(String value) { return "test-image.jpg"; }
+            public void deleteJpeg(String name) { deletedImages++; }
         };
         router = new BusinessRouter(port);
     }
@@ -98,6 +99,68 @@ public final class BusinessFlowTest {
             for (int i = 0; i < received.getJSONArray("items").length(); i++)
                 assertFalse("PENDING".equals(received.getJSONArray("items").getJSONObject(i).getString("status")));
         } finally { pool.shutdownNow(); }
+    }
+
+    @Test public void searchTreatsWildcardsLiterallyAndClosedPostsStayPrivateToList() throws Exception {
+        JSONObject body = new JSONObject().put("type", "FOUND").put("title", "钥匙%标记")
+                .put("description", "图书馆二楼捡到钥匙").put("category", "KEYS")
+                .put("location", "图书馆二楼");
+        long postId = call("POST", "/api/posts", 1, body).json.getJSONObject("data").getLong("id");
+        publish();
+        BusinessRouter.Reply found = router.route("GET", "/api/posts",
+                java.util.Collections.singletonMap("keyword", "%"), null, 0);
+        assertEquals(200, found.status);
+        assertEquals(1, found.json.getJSONObject("data").getJSONArray("items").length());
+        assertEquals(postId, found.json.getJSONObject("data").getJSONArray("items").getJSONObject(0).getLong("id"));
+        assertEquals(200, call("POST", "/api/posts/" + postId + "/close", 1, new JSONObject()).status);
+        found = router.route("GET", "/api/posts", java.util.Collections.singletonMap("keyword", "%"), null, 0);
+        assertEquals(0, found.json.getJSONObject("data").getJSONArray("items").length());
+        assertEquals(200, call("GET", "/api/posts/" + postId, 0, null).status);
+        BusinessRouter.Reply mine = router.route("GET", "/api/me/posts",
+                java.util.Collections.singletonMap("status", "CLOSED"), null, 1);
+        assertEquals(1, mine.json.getJSONObject("data").getJSONArray("items").length());
+        assertEquals(0, call("GET", "/api/me/posts", 2, null).json.getJSONObject("data").getJSONArray("items").length());
+    }
+
+    @Test public void rejectCancelAndResolveEnforceOwnershipAndFinalStates() throws Exception {
+        long postId = publish();
+        long rejected = claim(postId, 2);
+        JSONObject reason = new JSONObject().put("reason", "特征不符");
+        assertEquals(403, call("POST", "/api/claims/" + rejected + "/reject", 3, reason).status);
+        BusinessRouter.Reply refusal = call("POST", "/api/claims/" + rejected + "/reject", 1, reason);
+        assertEquals(200, refusal.status);
+        assertEquals("REJECTED", refusal.json.getJSONObject("data").getString("status"));
+        assertEquals("特征不符", refusal.json.getJSONObject("data").getString("note"));
+        assertEquals(409, call("POST", "/api/posts/" + postId + "/claims", 2, claimBody()).status);
+
+        long cancelled = claim(postId, 3);
+        assertEquals(403, call("POST", "/api/claims/" + cancelled + "/cancel", 2, null).status);
+        assertEquals(200, call("POST", "/api/claims/" + cancelled + "/cancel", 3, null).status);
+        assertEquals(409, call("POST", "/api/claims/" + cancelled + "/cancel", 3, null).status);
+
+        long another = publish();
+        long pending = claim(another, 2);
+        assertEquals(403, call("POST", "/api/posts/" + another + "/resolve", 2, null).status);
+        assertEquals(200, call("POST", "/api/posts/" + another + "/resolve", 1, null).status);
+        assertEquals(409, call("POST", "/api/posts/" + another + "/claims", 3, claimBody()).status);
+        JSONObject received = call("GET", "/api/posts/" + another + "/claims", 1, null)
+                .json.getJSONObject("data").getJSONArray("items").getJSONObject(0);
+        assertEquals(pending, received.getLong("id"));
+        assertEquals("REJECTED", received.getString("status"));
+        assertEquals("RESOLVED", received.getString("postStatus"));
+    }
+
+    @Test public void failedPostTransactionDeletesNewImage() throws Exception {
+        db.execSQL("CREATE TRIGGER reject_post BEFORE INSERT ON posts BEGIN SELECT RAISE(ABORT, 'test failure'); END");
+        JSONObject body = new JSONObject().put("type", "FOUND").put("title", "带图钥匙")
+                .put("description", "图书馆二楼捡到钥匙").put("category", "KEYS")
+                .put("location", "图书馆二楼").put("imageBase64", "test-image-content");
+        assertEquals(500, call("POST", "/api/posts", 1, body).status);
+        assertEquals(1, deletedImages);
+        try (android.database.Cursor cursor = db.rawQuery("SELECT count(*) FROM posts", null)) {
+            assertTrue(cursor.moveToFirst());
+            assertEquals(0, cursor.getInt(0));
+        }
     }
 
     private long publish() throws Exception {

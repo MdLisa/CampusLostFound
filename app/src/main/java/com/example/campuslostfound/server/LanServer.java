@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.FileInputStream;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +22,14 @@ public final class LanServer extends NanoHTTPD {
     private final String hostId;
     private final SessionStore sessions;
     private final BusinessRouter business;
+    private final ImageStore images;
 
-    public LanServer(String hostId, SessionStore sessions, BusinessRouter business) {
+    public LanServer(String hostId, SessionStore sessions, BusinessRouter business, ImageStore images) {
         super(ApiConstants.SERVER_PORT);
         this.hostId = hostId;
         this.sessions = sessions;
         this.business = business;
+        this.images = images;
     }
 
     @Override
@@ -63,6 +66,21 @@ public final class LanServer extends NanoHTTPD {
         if (Method.GET.equals(session.getMethod()) && "/api/session".equals(path)) {
             Member member = sessions.requireMemberFromHeader(session.getHeaders().get("authorization"));
             return JsonResponse.success(new JSONObject().put("member", member.toJson()).put("hostId", hostId));
+        }
+        if (Method.GET.equals(session.getMethod()) && path.startsWith("/images/")) {
+            FileInputStream input = null;
+            try {
+                input = images.openPublishedJpeg(path.substring("/images/".length()));
+                Response response = newFixedLengthResponse(
+                        Response.Status.OK, "image/jpeg", input, input.getChannel().size());
+                response.addHeader("Cache-Control", "no-store");
+                return response;
+            } catch (IOException e) {
+                if (input != null) {
+                    try { input.close(); } catch (IOException ignored) { }
+                }
+                throw new ApiException(Response.Status.INTERNAL_ERROR, "图片读取失败");
+            }
         }
         if (BusinessRouter.isBusinessPath(path)) {
             String method = session.getMethod().name();

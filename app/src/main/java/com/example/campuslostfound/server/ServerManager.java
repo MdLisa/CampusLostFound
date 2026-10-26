@@ -11,7 +11,7 @@ import fi.iki.elonen.NanoHTTPD;
 /** 全进程只维护一个监听实例。调用方在后台线程执行启停。 */
 public final class ServerManager {
     private static final ServerManager INSTANCE = new ServerManager();
-    private LanServer server;
+    private volatile LanServer server;
 
     private ServerManager() { }
 
@@ -26,9 +26,10 @@ public final class ServerManager {
         stop();
         AppDbHelper helper = AppDbHelper.getInstance(context);
         helper.initialize();
-        BusinessRouter business = new BusinessRouter(new DatabaseBusinessPort(helper));
+        ImageStore images = new ImageStore(context, helper);
+        BusinessRouter business = new BusinessRouter(new DatabaseBusinessPort(helper, images));
         LanServer candidate = new LanServer(
-                HostIdentity.getOrCreate(context), new SessionStore(helper), business);
+                HostIdentity.getOrCreate(context), new SessionStore(helper), business, images);
         try {
             candidate.start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
             server = candidate;
@@ -45,7 +46,9 @@ public final class ServerManager {
         }
     }
 
-    public synchronized boolean isRunning() {
-        return server != null && server.isAlive();
+    /** 界面只读取快照，不等待后台启动、数据库初始化或停止所持有的锁。 */
+    public boolean isRunning() {
+        LanServer current = server;
+        return current != null && current.isAlive();
     }
 }

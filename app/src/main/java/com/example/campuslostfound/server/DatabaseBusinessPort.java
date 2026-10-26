@@ -3,14 +3,18 @@ package com.example.campuslostfound.server;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.campuslostfound.common.DatabaseLock;
+import com.example.campuslostfound.common.ApiException;
+import java.io.IOException;
 import com.example.campuslostfound.data.AppDbHelper;
 
 /** 将 B 的业务回调接入 A 唯一的数据库入口，保留原异常以便事务回滚和正确返回状态。 */
 public final class DatabaseBusinessPort implements BusinessPort {
     private final AppDbHelper helper;
+    private final ImageStore images;
 
-    public DatabaseBusinessPort(AppDbHelper helper) {
+    public DatabaseBusinessPort(AppDbHelper helper, ImageStore images) {
         this.helper = helper;
+        this.images = images;
     }
 
     @Override
@@ -49,13 +53,18 @@ public final class DatabaseBusinessPort implements BusinessPort {
 
     @Override
     public String saveJpeg(String base64) throws BusinessException {
-        // 图片工具属于第五步；第四步先联调无图业务。
-        throw new BusinessException(400, "图片功能尚未接入，请先发布无图信息");
+        try {
+            return images.saveJpeg(base64);
+        } catch (ApiException e) {
+            throw new BusinessException(e.status.getRequestStatus(), e.getMessage());
+        } catch (IOException e) {
+            throw new BusinessException(500, "图片保存失败，请检查主机存储空间");
+        }
     }
 
     @Override
     public void deleteJpeg(String fileName) {
-        // 本步骤从不保存图片，因此没有需要清理的图片文件。
+        images.deleteJpeg(fileName);
     }
 
     private static final class WorkFailed extends RuntimeException {
