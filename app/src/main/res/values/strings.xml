@@ -44,10 +44,10 @@
     <string name="session_invalid">原身份已失效，请重新填写昵称。</string>
     <string name="session_failed">身份操作失败：%1$s</string>
     <string name="debug_open">进入业务联调</string>
-    <string name="debug_heading">无图业务联调</string>
+    <string name="debug_heading">图文业务联调</string>
     <string name="debug_identity_value">当前用户 ID：%1$d　昵称：%2$s</string>
     <string name="debug_identity_failed">身份验证失败：%1$s\n请返回连接页面，重新检测并恢复身份。</string>
-    <string name="debug_instructions">选择操作，填写需要的信息后发送。结果中的 id 是帖子或申请编号，可复制用于后续操作。本页供开发联调，尚未加入图片功能。</string>
+    <string name="debug_instructions">选择操作，填写需要的信息后发送。结果中的 id 是帖子或申请编号，可复制用于后续操作。发布可选择一张图片；查看帖子详情时会加载主机照片。</string>
     <string name="debug_operation_label">选择操作</string>
     <string name="debug_type_label">帖子类型</string>
     <string name="debug_category_label">物品分类</string>
@@ -76,7 +76,7 @@
     <string name="debug_display_error">无法生成或显示请求结果</string>
     <string name="debug_publish_filter_required">发布时请选择具体类型和分类，不能选择“全部”。</string>
     <string-array name="debug_operations">
-        <item>发布无图帖子</item><item>浏览／搜索帖子</item><item>查看帖子详情</item>
+        <item>发布帖子（可选图片）</item><item>浏览／搜索帖子</item><item>查看帖子详情</item>
         <item>我的发布</item><item>提交认领／拾获线索</item><item>我的申请</item>
         <item>查看帖子收到的申请</item><item>确认完成交接</item><item>拒绝申请</item>
         <item>取消我的申请</item><item>标记站外找回／归还</item><item>关闭帖子</item>
@@ -92,4 +92,17 @@
         <item>全部状态</item><item>待处理 PENDING</item><item>已完成 ACCEPTED</item>
         <item>已拒绝 REJECTED</item><item>已取消 CANCELLED</item>
     </string-array>
+    <string name="photo_choose">选择一张图片</string>
+    <string name="photo_remove">移除所选图片</string>
+    <string name="photo_none_selected">未选择图片，将发布无图帖子。</string>
+    <string name="photo_preparing">正在压缩图片，请稍候…</string>
+    <string name="photo_prepared">图片已准备：%1$d × %2$d 像素，%3$d KB</string>
+    <string name="photo_failed">图片处理失败：%1$s</string>
+    <string name="photo_permission_error">无法读取所选图片，请重新选择并允许访问。</string>
+    <string name="photo_prepare_error">无法处理所选图片，请换一张图片。</string>
+    <string name="photo_loading">正在从主机加载照片…</string>
+    <string name="photo_loaded">主机照片已加载</string>
+    <string name="photo_post_none">这条帖子没有照片。</string>
+    <string name="photo_selected_description">本次选中图片的预览</string>
+    <string name="photo_remote_description">从主机加载的帖子照片</string>
 </resources>

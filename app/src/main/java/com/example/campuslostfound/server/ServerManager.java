@@ -26,9 +26,10 @@ public final class ServerManager {
         stop();
         AppDbHelper helper = AppDbHelper.getInstance(context);
         helper.initialize();
-        BusinessRouter business = new BusinessRouter(new DatabaseBusinessPort(helper));
+        ImageStore images = new ImageStore(context, helper);
+        BusinessRouter business = new BusinessRouter(new DatabaseBusinessPort(helper, images));
         LanServer candidate = new LanServer(
-                HostIdentity.getOrCreate(context), new SessionStore(helper), business);
+                HostIdentity.getOrCreate(context), new SessionStore(helper), business, images);
         try {
             candidate.start(NanoHTTPD.SOCKET_READ_TIMEOUT, true);
             server = candidate;

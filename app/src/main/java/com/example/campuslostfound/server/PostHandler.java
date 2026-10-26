@@ -1,6 +1,7 @@
 package com.example.campuslostfound.server;
 
 import com.example.campuslostfound.data.ClaimDao;
+import com.example.campuslostfound.common.ImageRules;
 import com.example.campuslostfound.data.PostDao;
 import org.json.JSONObject;
 
@@ -22,14 +23,20 @@ public final class PostHandler {
             if (!(rawImage instanceof String)) throw new BusinessException(400, "图片格式错误");
             String base64 = (String) rawImage;
             if (base64.isEmpty()) throw new BusinessException(400, "图片格式错误");
-            if (base64.length() > 700000) throw new BusinessException(413, "图片过大");
+            if (base64.length() > ImageRules.MAX_BASE64_CHARS) throw new BusinessException(413, "图片过大");
             // A's ImageStore validates JPEG bytes, decoded size and randomized filename.
             image = port.saveJpeg(base64);
         }
         final String saved = image;
         try {
             return port.writeTransaction(db -> posts.get(db, posts.insert(db, memberId, body, saved, System.currentTimeMillis())));
-        } catch (Exception e) { if (saved != null) port.deleteJpeg(saved); throw e; }
+        } catch (Exception e) {
+            if (saved != null) {
+                try { port.deleteJpeg(saved); }
+                catch (RuntimeException cleanup) { e.addSuppressed(cleanup); }
+            }
+            throw e;
+        }
     }
 
     public JSONObject list(String type, String category, String keyword, String status) throws Exception {

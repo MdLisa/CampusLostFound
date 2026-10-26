@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.campuslostfound.common.ApiConstants;
+import com.example.campuslostfound.common.ImageCompressor;
+import com.example.campuslostfound.common.ImageRules;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -282,6 +284,111 @@ public final class LanApiClient implements AutoCloseable {
             }
         });
     }
+
+    public interface ImageCallback {
+        /** 在主线程返回；替换或销毁时清除 View 与 Bitmap 引用。未显示的 Bitmap 可直接回收。 */
+        void onSuccess(android.graphics.Bitmap bitmap);
+        void onFailure(ApiError error);
+    }
+
+    /** 图片使用同一个网络线程、主机快照、超时和取消机制，不携带 token。 */
+    public RequestHandle loadImage(String imagePath, ImageCallback callback) {
+        ensureOpen();
+        if (callback == null) throw new IllegalArgumentException("callback 不能为空");
+        RequestHandle handle = new RequestHandle();
+        ClientConnectionStore.Snapshot selected = store.snapshot();
+        pending.add(handle);
+        try {
+            worker.execute(() -> {
+                if (closed || handle.cancelled.get()) {
+                    pending.remove(handle);
+                    return;
+                }
+                android.graphics.Bitmap bitmap = null;
+                ApiError error = null;
+                HttpURLConnection connection = null;
+                try {
+                    if (!ImageRules.isImagePath(imagePath)) {
+                        throw new ClientFailure(0, "图片相对路径格式错误");
+                    }
+                    if (!selected.verified || !store.isCurrent(selected)) {
+                        throw new ClientFailure(0, "主机连接已改变，请重新检测");
+                    }
+                    connection = (HttpURLConnection) new URL(selected.address + imagePath).openConnection();
+                    connection.setConnectTimeout(TIMEOUT_MS);
+                    connection.setReadTimeout(TIMEOUT_MS);
+                    connection.setInstanceFollowRedirects(false);
+                    connection.setUseCaches(false);
+                    connection.setRequestProperty("Accept", "image/jpeg");
+                    int code = connection.getResponseCode();
+                    if (code != 200) {
+                        String message = "图片请求失败（HTTP " + code + "）";
+                        InputStream failure = connection.getErrorStream();
+                        if (failure != null) {
+                            try {
+                                message = new JSONObject(read(failure)).optString("message", message);
+                            } catch (JSONException ignored) { }
+                        }
+                        throw new ClientFailure(code, message);
+                    }
+                    String type = connection.getContentType();
+                    if (type == null || !"image/jpeg".equalsIgnoreCase(type.split(";", 2)[0].trim())) {
+                        throw new ClientFailure(0, "主机返回的内容不是 JPEG 图片");
+                    }
+                    if (connection.getContentLengthLong() > ImageRules.MAX_JPEG_BYTES) {
+                        throw new ClientFailure(0, "主机返回图片过大");
+                    }
+                    try (InputStream input = connection.getInputStream();
+                            ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                        byte[] buffer = new byte[4096];
+                        int count;
+                        while ((count = input.read(buffer)) != -1) {
+                            if (output.size() + count > ImageRules.MAX_JPEG_BYTES) {
+                                throw new ClientFailure(0, "主机返回图片过大");
+                            }
+                            output.write(buffer, 0, count);
+                        }
+                        bitmap = ImageCompressor.decodeJpeg(output.toByteArray());
+                    }
+                } catch (ClientFailure e) {
+                    error = new ApiError(e.code, e.getMessage());
+                } catch (SocketTimeoutException e) {
+                    error = new ApiError(0, "图片加载超时，请检查主机和网络");
+                } catch (SecurityException e) {
+                    error = new ApiError(0, "缺少局域网访问权限");
+                } catch (IOException e) {
+                    error = new ApiError(0, "无法读取或解码主机图片");
+                } finally {
+                    if (connection != null) connection.disconnect();
+                }
+                deliverImage(handle, callback, selected, bitmap, error);
+            });
+        } catch (RejectedExecutionException e) {
+            deliverImage(handle, callback, selected, null, new ApiError(0, "网络工具已关闭"));
+        }
+        return handle;
+    }
+
+    private void deliverImage(RequestHandle handle, ImageCallback callback,
+            ClientConnectionStore.Snapshot selected, android.graphics.Bitmap bitmap, ApiError error) {
+        mainHandler.post(() -> {
+            pending.remove(handle);
+            if (closed || handle.cancelled.get()) {
+                if (bitmap != null) bitmap.recycle();
+                return;
+            }
+            if (!store.isCurrent(selected)) {
+                if (bitmap != null) bitmap.recycle();
+                callback.onFailure(new ApiError(0, "主机连接已改变，请重新加载图片"));
+            } else if (error != null) {
+                if (bitmap != null) bitmap.recycle();
+                callback.onFailure(error);
+            } else {
+                callback.onSuccess(bitmap);
+            }
+        });
+    }
+
 
     private void ensureOpen() {
         if (closed) {

@@ -27,6 +27,19 @@
             <EditText android:id="@+id/debug_description" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/debug_description_hint" android:inputType="text" android:importantForAutofill="no" android:text="@string/debug_sample_description"/>
             <EditText android:id="@+id/debug_location" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/debug_location_hint" android:inputType="text" android:importantForAutofill="no" android:text="@string/debug_sample_location"/>
         </LinearLayout>
+        <LinearLayout android:id="@+id/debug_image_selection" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <Button android:id="@+id/debug_choose_photo" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_choose" />
+            <Button android:id="@+id/debug_remove_photo" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_remove" />
+            <TextView android:id="@+id/debug_selected_photo_status" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/photo_none_selected"
+                android:accessibilityLiveRegion="polite" />
+            <ImageView android:id="@+id/debug_selected_photo" android:layout_width="match_parent"
+                android:layout_height="220dp" android:scaleType="fitCenter" android:visibility="gone"
+                android:contentDescription="@string/photo_selected_description" />
+        </LinearLayout>
         <LinearLayout android:id="@+id/debug_id_group" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
             <TextView android:id="@+id/debug_id_label" android:layout_width="match_parent" android:layout_height="wrap_content" />
@@ -51,5 +64,10 @@
         <TextView android:id="@+id/debug_output" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="16dp"
             android:textIsSelectable="true" android:accessibilityLiveRegion="polite" android:textSize="15sp" />
+        <TextView android:id="@+id/debug_remote_photo_status" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" />
+        <ImageView android:id="@+id/debug_remote_photo" android:layout_width="match_parent"
+            android:layout_height="260dp" android:scaleType="fitCenter" android:visibility="gone"
+            android:contentDescription="@string/photo_remote_description" />
     </LinearLayout>
 </ScrollView>

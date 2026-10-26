@@ -1,6 +1,7 @@
 package com.example.campuslostfound.data;
 
 import android.content.ContentValues;
+import com.example.campuslostfound.common.ImageRules;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import org.json.JSONArray;
@@ -64,7 +65,7 @@ public final class PostDao {
                 .put("description", c.getString(c.getColumnIndexOrThrow("description")))
                 .put("category", c.getString(c.getColumnIndexOrThrow("category")))
                 .put("location", c.getString(c.getColumnIndexOrThrow("location")))
-                .put("imagePath", image == null ? JSONObject.NULL : "/images/" + image)
+                .put("imagePath", image == null ? JSONObject.NULL : ImageRules.imagePath(image))
                 .put("status", c.getString(c.getColumnIndexOrThrow("status")))
                 .put("owner", new JSONObject().put("id", c.getLong(c.getColumnIndexOrThrow("owner_id")))
                         .put("nickname", c.getString(c.getColumnIndexOrThrow("owner_nickname"))))
