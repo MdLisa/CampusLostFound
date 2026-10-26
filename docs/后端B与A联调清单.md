@@ -6,7 +6,7 @@
 
 本轮补充 B 的设备回归用例：标题搜索把 `%` 当普通字符、关闭帖从公开列表隐藏但仍能在本人列表和详情查询；拒绝、取消、站外完成的权限及最终状态；图片已保存但帖子事务失败时调用清理且没有留下帖子。A 的 `BackendRecoveryInstrumentedTest` 另覆盖真实 HTTP、持久化数据库及 JPEG 读取。
 
-合并后 `assembleDebug`、`lintDebug`、`compileDebugAndroidTestJavaWithJavac` 和本地单元测试已通过。设备回归测试仍需在可用的模拟器或专用设备上执行；本次自动启动模拟器触发了 Windows 的 `crashpad_handler.exe` 异常，未据此声称设备测试通过。跨手机网络、Android 37 局域网权限及完整前端仍需按下文和第五、六步说明验收。
+合并后 `assembleDebug`、`lintDebug`、`compileDebugAndroidTestJavaWithJavac` 和本地单元测试已通过。用户从 Android Studio 手动启动 Pixel 9（Android 16 / API 36）后，`connectedDebugAndroidTest` 实际执行 17 项、失败 0 项：其中 `BusinessFlowTest` 7 项、`BackendRecoveryInstrumentedTest` 4 项、`LanServerInstrumentedTest` 5 项和模板测试 1 项。报告见 `app/build/reports/androidTests/connected/debug/index.html`。跨手机网络、Android 37 局域网权限及完整前端仍需按下文和第五、六步说明验收。
 
 ## A 提供的公共接入约定
 
