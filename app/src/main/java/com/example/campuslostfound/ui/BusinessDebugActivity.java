@@ -64,6 +64,8 @@ public class BusinessDebugActivity extends AppCompatActivity {
     private LanApiClient.RequestHandle photoRequest;
     private boolean imageBusy;
     private boolean requestBusy;
+    // 写请求中断只表示未取得结果，不代表主机已经回滚。
+    private boolean writeOutcomeUnknown;
     private int imageGeneration;
 
     private final androidx.activity.result.ActivityResultLauncher<String> photoPicker =
@@ -102,6 +104,8 @@ public class BusinessDebugActivity extends AppCompatActivity {
         reason = findViewById(R.id.debug_reason);
         identity = findViewById(R.id.debug_identity);
         output = findViewById(R.id.debug_output);
+        writeOutcomeUnknown = savedInstanceState != null
+                && savedInstanceState.getBoolean("write_outcome_unknown", false);
         idLabel = findViewById(R.id.debug_id_label);
         send = findViewById(R.id.debug_send);
         choosePhoto = findViewById(R.id.debug_choose_photo);
@@ -135,6 +139,7 @@ public class BusinessDebugActivity extends AppCompatActivity {
         super.onStart();
         visible = true;
         ready = false;
+        output.setText(writeOutcomeUnknown ? R.string.debug_write_unknown : R.string.debug_ready);
         setBusy(true);
         client = new LanApiClient(getApplicationContext());
         api = new LostFoundApi(new LanApiTransport(client));
@@ -212,20 +217,23 @@ public class BusinessDebugActivity extends AppCompatActivity {
                 return;
             }
         }
+        final boolean writing = selected == 0 || selected == 4 || selected >= 7;
+        writeOutcomeUnknown = writing;
         setBusy(true);
         clearRemotePhoto();
         output.setText(R.string.debug_sending);
         LostFoundApi.Callback callback = (code, response, error) -> {
             if (!visible) return;
-            setBusy(false);
+            writeOutcomeUnknown = writing && error != null;
             if (code == 401) {
                 ready = false;
-                send.setEnabled(false);
-                identity.setText(R.string.session_invalid);
+                identity.setText(getString(R.string.debug_identity_failed, getString(R.string.session_invalid)));
             }
+            setBusy(false);
             try {
                 output.setText(error != null
                         ? getString(R.string.debug_network_error, error.getMessage())
+                                + (writing ? "\n\n" + getString(R.string.debug_write_unknown) : "")
                         : getString(R.string.debug_response, code, response.toString(2)));
                 if (error == null && code == 200 && (selected == 0 || selected == 2)) {
                     loadPostPhoto(response.optJSONObject("data"));
@@ -240,6 +248,7 @@ public class BusinessDebugActivity extends AppCompatActivity {
                 case 0:
                     if (type.getSelectedItemPosition() == 0 || category.getSelectedItemPosition() == 0) {
                         setBusy(false);
+                        writeOutcomeUnknown = false;
                         output.setText(R.string.debug_publish_filter_required);
                         return;
                     }
@@ -266,6 +275,7 @@ public class BusinessDebugActivity extends AppCompatActivity {
                 default: setBusy(false);
             }
         } catch (JSONException e) {
+            writeOutcomeUnknown = false;
             setBusy(false);
             output.setText(R.string.debug_display_error);
         }
@@ -383,6 +393,12 @@ public class BusinessDebugActivity extends AppCompatActivity {
                 setBusy(false);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("write_outcome_unknown", writeOutcomeUnknown);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

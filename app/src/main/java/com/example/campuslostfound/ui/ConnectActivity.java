@@ -81,7 +81,6 @@ public class ConnectActivity extends AppCompatActivity {
         restoreButton = findViewById(R.id.restore_session);
         businessButton = findViewById(R.id.open_business_debug);
         store = ClientConnectionStore.getInstance(this);
-        client = new LanApiClient(getApplicationContext());
         if (savedInstanceState == null) {
             addressInput.setText(store.getBaseAddress());
         }
@@ -110,7 +109,9 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         visible = true;
+        client = new LanApiClient(getApplicationContext());
         connectedAddress = null;
+        businessButton.setVisibility(View.GONE);
         sessionPanel.setVisibility(View.GONE);
         setBusy(false);
     }
@@ -184,6 +185,7 @@ public class ConnectActivity extends AppCompatActivity {
         }
         setBusy(true);
         nicknameControls.setVisibility(View.GONE);
+        businessButton.setVisibility(View.GONE);
         identityResult.setText(R.string.session_restoring);
         request = client.restoreSession(identityCallback(false));
     }
@@ -211,6 +213,7 @@ public class ConnectActivity extends AppCompatActivity {
                     return;
                 }
                 setBusy(false);
+                businessButton.setVisibility(View.GONE);
                 if (error.statusCode == 401) {
                     showNickname(R.string.session_invalid);
                 } else {
@@ -253,15 +256,12 @@ public class ConnectActivity extends AppCompatActivity {
         if (request != null) {
             request.cancel();
         }
+        client.close();
+        request = null;
         connectedAddress = null;
+        businessButton.setVisibility(View.GONE);
         sessionPanel.setVisibility(View.GONE);
         result.setText(R.string.client_idle);
         super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        client.close();
-        super.onDestroy();
     }
 }

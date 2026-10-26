@@ -105,4 +105,6 @@
     <string name="photo_post_none">这条帖子没有照片。</string>
     <string name="photo_selected_description">本次选中图片的预览</string>
     <string name="photo_remote_description">从主机加载的帖子照片</string>
+    <string name="debug_ready">身份验证后可发送请求，请重新查询需要的记录。</string>
+    <string name="debug_write_unknown">上次写操作尚未确认结果，主机可能已经处理。恢复连接后，请先查看“我的发布”“我的申请”或帖子收到的申请，核对结果再决定是否重试。</string>
 </resources>

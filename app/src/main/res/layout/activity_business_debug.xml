@@ -5,7 +5,8 @@
         android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/debug_heading" android:textSize="24sp" android:textStyle="bold" />
-        <TextView android:id="@+id/debug_identity" android:layout_width="match_parent"
+        <TextView android:id="@+id/debug_identity"
+            android:saveEnabled="false" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="12dp" android:textSize="16sp" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/debug_instructions" android:layout_marginTop="12dp" />
@@ -33,7 +34,8 @@
                 android:layout_height="wrap_content" android:text="@string/photo_choose" />
             <Button android:id="@+id/debug_remove_photo" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="@string/photo_remove" />
-            <TextView android:id="@+id/debug_selected_photo_status" android:layout_width="match_parent"
+            <TextView android:id="@+id/debug_selected_photo_status"
+                android:saveEnabled="false" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="@string/photo_none_selected"
                 android:accessibilityLiveRegion="polite" />
             <ImageView android:id="@+id/debug_selected_photo" android:layout_width="match_parent"
@@ -61,10 +63,12 @@
         </LinearLayout>
         <Button android:id="@+id/debug_send" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:text="@string/debug_send" android:enabled="false" />
-        <TextView android:id="@+id/debug_output" android:layout_width="match_parent"
+        <TextView android:id="@+id/debug_output"
+            android:saveEnabled="false" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="16dp"
             android:textIsSelectable="true" android:accessibilityLiveRegion="polite" android:textSize="15sp" />
-        <TextView android:id="@+id/debug_remote_photo_status" android:layout_width="match_parent"
+        <TextView android:id="@+id/debug_remote_photo_status"
+            android:saveEnabled="false" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" />
         <ImageView android:id="@+id/debug_remote_photo" android:layout_width="match_parent"
             android:layout_height="260dp" android:scaleType="fitCenter" android:visibility="gone"
