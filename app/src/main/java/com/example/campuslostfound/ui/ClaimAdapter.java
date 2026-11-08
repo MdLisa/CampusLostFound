@@ -64,7 +64,11 @@ final class ClaimAdapter extends BaseAdapter {
             if (!expanded.add(id)) expanded.remove(id);
             notifyDataSetChanged();
         });
-        row.findViewById(R.id.claim_open_post).setOnClickListener(view -> actions.openPost(claim.optLong("postId")));
+        TextView openPost = row.findViewById(R.id.claim_open_post);
+        boolean deleted = claim.optBoolean("postDeleted");
+        openPost.setText(deleted ? R.string.ui_post_deleted : R.string.ui_record_detail);
+        openPost.setEnabled(!deleted);
+        openPost.setOnClickListener(view -> { if (!deleted) actions.openPost(claim.optLong("postId")); });
         boolean pending = "PENDING".equals(claim.optString("status")) && "OPEN".equals(claim.optString("postStatus"));
         bindAction(row, R.id.claim_cancel, !received && pending, () -> actions.cancel(claim));
         bindAction(row, R.id.claim_confirm, received && postOpen && pending, () -> actions.confirm(claim));

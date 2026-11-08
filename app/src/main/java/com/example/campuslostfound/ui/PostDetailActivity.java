@@ -47,13 +47,21 @@ public class PostDetailActivity extends BusinessActivity {
         findViewById(R.id.post_actions).setVisibility(View.GONE);
         image.setImageDrawable(null);
         post = null;
+        for (int id : new int[]{R.id.detail_title, R.id.detail_type, R.id.detail_state,
+                R.id.detail_description, R.id.detail_location, R.id.detail_owner,
+                R.id.detail_time, R.id.detail_photo_status}) ((TextView) findViewById(id)).setText("");
+        image.setVisibility(View.GONE);
+        findViewById(R.id.retry_photo).setVisibility(View.GONE);
         setBusy(true);
         showState(getString(R.string.ui_loading), false);
         api.getPost(postId, (code, response, error) -> {
             if (!visible) return;
             JSONObject data = result(code, response, error, false);
             if (data == null) {
-                if (code == 404) showState(getString(R.string.ui_not_found), false);
+                if (code == 404) {
+                    findViewById(R.id.business_body).setVisibility(View.GONE);
+                    showState(getString(R.string.ui_not_found), false);
+                }
                 return;
             }
             post = data;
@@ -95,7 +103,7 @@ public class PostDetailActivity extends BusinessActivity {
         photoStatus.setText(R.string.photo_loading);
         client.loadImage(imagePath, new LanApiClient.ImageCallback() {
             @Override public void onSuccess(Bitmap bitmap) {
-                if (!visible) { bitmap.recycle(); return; }
+                if (!visible || post == null) { bitmap.recycle(); return; }
                 image.setImageBitmap(bitmap);
                 image.setVisibility(View.VISIBLE);
                 photoStatus.setText("");

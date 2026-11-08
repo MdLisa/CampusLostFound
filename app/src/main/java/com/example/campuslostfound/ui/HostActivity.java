@@ -31,6 +31,7 @@ public class HostActivity extends ChineseActivity {
     // 队列随进程存在；页面退出仍会排队停止监听。
     private static final ExecutorService WORKER = Executors.newSingleThreadExecutor();
     private final ServerManager serverManager = ServerManager.getInstance();
+    private HostAdminPanel adminPanel;
     private TextView status;
     private TextView addresses;
     private Button startButton;
@@ -75,6 +76,7 @@ public class HostActivity extends ChineseActivity {
         startButton.setOnClickListener(view -> requestStart());
         stopButton.setOnClickListener(view -> stopServer());
         refreshButton.setOnClickListener(view -> refreshAddresses());
+        adminPanel = new HostAdminPanel(this, savedInstanceState);
     }
 
     @Override
@@ -85,6 +87,7 @@ public class HostActivity extends ChineseActivity {
         status.setText(R.string.host_stopped);
         updateButtons();
         refreshAddresses();
+        adminPanel.onStart();
     }
 
     private void requestStart() {
@@ -179,11 +182,22 @@ public class HostActivity extends ChineseActivity {
 
     @Override
     protected void onStop() {
+        adminPanel.onStop();
         visible = false;
         lifecycleGeneration++;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // 与启动共用串行队列：即使启动尚未完成，退出后也一定执行停止。
         WORKER.execute(serverManager::stop);
         super.onStop();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle out) {
+        adminPanel.saveState(out);
+        super.onSaveInstanceState(out);
+    }
+
+    @Override protected void onDestroy() {
+        if (adminPanel != null) adminPanel.onDestroy();
+        super.onDestroy();
     }
 }

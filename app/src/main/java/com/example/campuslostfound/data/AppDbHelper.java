@@ -10,7 +10,7 @@ import com.example.campuslostfound.common.DatabaseLock;
 /** 主机端唯一的数据库入口。只在启动主机及处理请求时打开数据库。 */
 public final class AppDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "campus_lost_found.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     private static AppDbHelper instance;
 
     private AppDbHelper(Context context) {
@@ -99,11 +99,28 @@ public final class AppDbHelper extends SQLiteOpenHelper {
         database.execSQL("CREATE INDEX idx_posts_status_created ON posts(status,created_at,id)");
         database.execSQL("CREATE INDEX idx_claims_post_status ON claims(post_id,status)");
         database.execSQL("CREATE INDEX idx_claims_applicant_created ON claims(applicant_id,created_at,id)");
+        createAdminActions(database);
+        addSoftDeletion(database);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        // 第一版只有版本 1；以后新增迁移，禁止靠删表重建来升级。
-        throw new IllegalStateException("数据库升级需要明确的迁移方案");
+        if (oldVersion < 2) createAdminActions(database);
+        if (oldVersion < 3) addSoftDeletion(database);
+    }
+
+    private static void createAdminActions(SQLiteDatabase database) {
+        database.execSQL("CREATE TABLE admin_actions ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "post_id INTEGER NOT NULL REFERENCES posts(id),"
+                + "post_title TEXT NOT NULL,reason TEXT NOT NULL,created_at INTEGER NOT NULL)");
+        database.execSQL("CREATE INDEX idx_admin_actions_created ON admin_actions(created_at,id)");
+    }
+
+    private static void addSoftDeletion(SQLiteDatabase database) {
+        database.execSQL("ALTER TABLE posts ADD COLUMN is_deleted INTEGER NOT NULL DEFAULT 0 CHECK(is_deleted IN (0,1))");
+        database.execSQL("ALTER TABLE posts ADD COLUMN deleted_at INTEGER");
+        database.execSQL("ALTER TABLE admin_actions ADD COLUMN action TEXT NOT NULL DEFAULT 'CLOSE'");
+        database.execSQL("CREATE INDEX idx_posts_visible_status ON posts(is_deleted,status,created_at,id)");
     }
 }
