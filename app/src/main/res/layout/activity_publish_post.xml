@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/business_root" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/toolbar" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" app:title="@string/ui_publish" app:navigationIcon="@drawable/ic_back" app:navigationContentDescription="@string/ui_back"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="20dp" android:orientation="vertical">
+        <ProgressBar android:id="@+id/page_progress" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="4dp" android:indeterminate="true" android:visibility="gone"/>
+        <TextView android:id="@+id/page_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginVertical="8dp" android:textAppearance="@style/UiCaption" android:accessibilityLiveRegion="polite" android:saveEnabled="false"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/page_retry" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/ui_retry" android:visibility="gone"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:id="@+id/business_body" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="20dp" android:paddingBottom="24dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_publish_note" android:textAppearance="@style/UiCaption"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_type_filter" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+                <Spinner android:id="@+id/publish_type" style="@style/UiSpinner" android:layout_width="match_parent" android:layout_height="wrap_content" android:prompt="@string/ui_type_filter"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_title_label" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+                <EditText android:importantForAutofill="no" android:id="@+id/publish_title" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/ui_title_hint" android:inputType="textCapSentences" android:layout_marginTop="8dp" android:singleLine="true"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_description_label" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+                <EditText android:importantForAutofill="no" android:id="@+id/publish_description" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/ui_description_hint" android:inputType="textMultiLine|textCapSentences" android:layout_marginTop="8dp" android:minLines="4" android:gravity="top"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_category_filter" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+                <Spinner android:id="@+id/publish_category" style="@style/UiSpinner" android:layout_width="match_parent" android:layout_height="wrap_content" android:prompt="@string/ui_category_filter"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_location_label" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+                <EditText android:importantForAutofill="no" android:id="@+id/publish_location" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/ui_location_hint" android:inputType="textCapSentences" android:layout_marginTop="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_photo_label" android:textAppearance="@style/UiSection" android:layout_marginTop="28dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_photo_tip" android:textAppearance="@style/UiCaption" android:layout_marginTop="8dp"/>
+                <ImageView android:id="@+id/publish_photo" android:layout_width="match_parent" android:layout_height="200dp" android:layout_marginTop="16dp" android:visibility="gone" android:scaleType="fitCenter" android:contentDescription="@string/photo_selected_description"/>
+                <TextView android:id="@+id/publish_photo_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiCaption" android:layout_marginTop="12dp" android:text="@string/photo_none_selected" android:accessibilityLiveRegion="polite"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/choose_photo" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_pick_photo" android:layout_marginTop="12dp"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/remove_photo" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_remove_photo" android:visibility="gone" android:layout_marginTop="8dp"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/submit_post" style="@style/UiButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_publish_submit" android:layout_marginTop="24dp"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/check_publish_records" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_my_posts" android:visibility="gone" android:layout_marginTop="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

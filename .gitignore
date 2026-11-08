@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# 本机工具、构建缓存与安装产物
+/.local-tools/
+/安装包/
+__pycache__/

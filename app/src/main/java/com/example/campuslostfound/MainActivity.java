@@ -5,14 +5,14 @@ import android.content.Intent;
 
 import com.example.campuslostfound.ui.HostActivity;
 import com.example.campuslostfound.ui.ConnectActivity;
+import com.example.campuslostfound.ui.ChineseActivity;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ChineseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ConnectActivity.class)));
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            int padding = Math.round(24 * getResources().getDisplayMetrics().density);
+            v.setPadding(systemBars.left + padding, systemBars.top + padding,
+                    systemBars.right + padding, systemBars.bottom + padding);
             return insets;
         });
     }

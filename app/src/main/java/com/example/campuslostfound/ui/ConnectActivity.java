@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,8 +24,8 @@ import com.example.campuslostfound.api.LanApiClient;
 
 import org.json.JSONObject;
 
-/** A 的连接与身份调试页，后续正式业务界面复用 api。 */
-public class ConnectActivity extends AppCompatActivity {
+/** 连接与昵称进入页，保留原权限和身份恢复流程。 */
+public class ConnectActivity extends ChineseActivity {
     private static final String LOCAL_NETWORK_PERMISSION = "android.permission.ACCESS_LOCAL_NETWORK";
     private EditText addressInput;
     private EditText nicknameInput;
@@ -100,7 +99,7 @@ public class ConnectActivity extends AppCompatActivity {
         restoreButton.setOnClickListener(view -> restoreSession());
         businessButton.setOnClickListener(view -> {
             if (!busy && connectedAddress != null && store.hasIdentity()) {
-                startActivity(new Intent(this, BusinessDebugActivity.class));
+                startActivity(new Intent(this, PostListActivity.class));
             }
         });
     }
@@ -144,8 +143,7 @@ public class ConnectActivity extends AppCompatActivity {
                 setBusy(false);
                 addressInput.setText(store.getBaseAddress());
                 connectedAddress = store.getBaseAddress();
-                result.setText(getString(R.string.client_connected,
-                        data.optString("app"), data.optInt("protocolVersion"), data.optString("hostId")));
+                result.setText(R.string.client_connected);
                 sessionPanel.setVisibility(View.VISIBLE);
                 if (store.hasIdentity()) {
                     restoreSession();
@@ -158,7 +156,9 @@ public class ConnectActivity extends AppCompatActivity {
             public void onFailure(LanApiClient.ApiError error) {
                 if (visible) {
                     setBusy(false);
-                    result.setText(getString(R.string.client_failed, error.message));
+                    result.setText(getString(R.string.client_failed,
+                            UiSupport.errorMessage(ConnectActivity.this, error.message,
+                                    R.string.ui_network_failed)));
                 }
             }
         });
@@ -204,7 +204,7 @@ public class ConnectActivity extends AppCompatActivity {
                 nicknameInput.setText("");
                 businessButton.setVisibility(View.VISIBLE);
                 identityResult.setText(getString(created ? R.string.session_created : R.string.session_restored,
-                        member.optLong("id"), member.optString("nickname")));
+                        member.optString("nickname")));
             }
 
             @Override
@@ -225,7 +225,9 @@ public class ConnectActivity extends AppCompatActivity {
                         nicknameControls.setVisibility(View.VISIBLE);
                         restoreButton.setVisibility(View.GONE);
                     }
-                    identityResult.setText(getString(R.string.session_failed, error.message));
+                    identityResult.setText(getString(R.string.session_failed,
+                            UiSupport.errorMessage(ConnectActivity.this, error.message,
+                                    R.string.ui_network_failed)));
                 }
             }
         };

@@ -1,111 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-    <LinearLayout
-        android:id="@+id/connect_root"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/client_title"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/client_address_label" />
-        <EditText
-            android:id="@+id/host_address_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="@string/client_address_hint"
-            android:inputType="textUri"
-            android:singleLine="true"
-            android:importantForAutofill="no" />
-        <Button
-            android:id="@+id/connect_host"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/client_connect" />
-        <TextView
-            android:id="@+id/connection_result"
-            android:saveEnabled="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:accessibilityLiveRegion="polite"
-            android:text="@string/client_idle"
-            android:textIsSelectable="true"
-            android:textSize="16sp" />
-        <LinearLayout
-            android:id="@+id/session_panel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/session_title"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/identity_result"
-                android:saveEnabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:accessibilityLiveRegion="polite"
-                android:textIsSelectable="true"
-                android:textSize="16sp" />
-            <LinearLayout
-                android:id="@+id/nickname_controls"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <EditText
-                    android:id="@+id/nickname_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:hint="@string/session_nickname_hint"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
-                    android:saveEnabled="false"
-                    android:importantForAutofill="no" />
-                <Button
-                    android:id="@+id/create_session"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/session_create" />
+<?xml version="1.0" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout android:id="@+id/connect_root" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/client_title" android:textAppearance="@style/UiTitle" android:textStyle="bold"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/client_address_label"/>
+        <EditText style="@style/UiInput" android:id="@+id/host_address_input" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/client_address_hint" android:inputType="textUri" android:singleLine="true" android:importantForAutofill="no"/>
+        <com.google.android.material.button.MaterialButton style="@style/UiButton" android:id="@+id/connect_host" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/client_connect"/>
+        <TextView android:id="@+id/connection_result" android:saveEnabled="false" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:accessibilityLiveRegion="polite" android:text="@string/client_idle" android:textIsSelectable="true" android:textSize="16sp"/>
+        <LinearLayout android:id="@+id/session_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:orientation="vertical" android:visibility="gone">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/session_title" android:textSize="20sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/identity_result" android:saveEnabled="false" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:accessibilityLiveRegion="polite" android:textIsSelectable="true" android:textSize="16sp"/>
+            <LinearLayout android:id="@+id/nickname_controls" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                <EditText style="@style/UiInput" android:id="@+id/nickname_input" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:hint="@string/session_nickname_hint" android:inputType="textPersonName" android:singleLine="true" android:saveEnabled="false" android:importantForAutofill="no"/>
+                <com.google.android.material.button.MaterialButton style="@style/UiButton" android:id="@+id/create_session" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/session_create"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/restore_session"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/session_restore" />
-            <Button
-                android:id="@+id/open_business_debug"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/debug_open" />
+            <com.google.android.material.button.MaterialButton style="@style/UiButton" android:id="@+id/restore_session" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" android:text="@string/session_restore"/>
+            <com.google.android.material.button.MaterialButton style="@style/UiButton" android:id="@+id/open_business_debug" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" android:text="@string/enter_home"/>
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/client_hint"
-            android:textSize="16sp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:text="@string/client_hint" android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

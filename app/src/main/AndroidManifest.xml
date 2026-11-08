@@ -16,6 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusLostFound">
+        <activity android:name=".ui.PostListActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.PostDetailActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.PublishPostActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.MyRecordsActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.ReceivedClaimsActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.BusinessDebugActivity"
             android:exported="false"

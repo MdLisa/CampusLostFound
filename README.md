@@ -75,3 +75,12 @@ CampusLostFound/
 - 不把主机运行时生成的数据库、用户照片、token、手机地址配置提交进仓库。这些由 App 在手机上保存。
 - `local.properties`、`.gradle`、各模块的 `build` 等本机配置和生成文件按 `.gitignore` 忽略，不手动加入 Git。
 - `gradle` 目录、构建配置、`gradlew` 和 `gradlew.bat` 需要提交，供成员使用同一套项目配置。
+
+## 前端运行与验收
+
+正式页面使用 Java + XML、现有 Material 组件和公共调用工具。前端分支为 `前端`，合并目标为 `master`。
+
+- [前端交接说明](docs/testing/前端交接说明.md)：运行与联调重点。
+- [前端验收与使用说明](docs/testing/前端验收与使用说明.md)：页面对应、构建方法和验收记录。
+
+在 Android Studio 中打开项目根目录，按现有工程配置完成同步后运行。需要命令行构建时，可运行 `bash scripts/build-debug.sh`；生成的安装包和本机工具不提交。
