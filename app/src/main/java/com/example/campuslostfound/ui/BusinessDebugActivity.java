@@ -10,7 +10,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /** 第四步临时联调页；通过 LostFoundApi 调用业务，不直接访问主机数据库。 */
-public class BusinessDebugActivity extends AppCompatActivity {
+public class BusinessDebugActivity extends ChineseActivity {
     private static final String[] TYPES = {null, "FOUND", "LOST"};
     private static final String[] CATEGORIES = {null, "CARD", "ELECTRONICS", "KEYS", "BOOKS", "DAILY", "OTHER"};
     private Spinner operation;
@@ -160,7 +159,9 @@ public class BusinessDebugActivity extends AppCompatActivity {
                 if (!visible) return;
                 ready = false;
                 setBusy(false);
-                identity.setText(getString(R.string.debug_identity_failed, error.message));
+                identity.setText(getString(R.string.debug_identity_failed,
+                        UiSupport.errorMessage(BusinessDebugActivity.this, error.message,
+                                R.string.ui_network_failed)));
             }
         });
         preparePendingPhoto();
@@ -232,7 +233,9 @@ public class BusinessDebugActivity extends AppCompatActivity {
             setBusy(false);
             try {
                 output.setText(error != null
-                        ? getString(R.string.debug_network_error, error.getMessage())
+                        ? getString(R.string.debug_network_error,
+                                UiSupport.errorMessage(this, error.getMessage(),
+                                        R.string.ui_network_failed))
                                 + (writing ? "\n\n" + getString(R.string.debug_write_unknown) : "")
                         : getString(R.string.debug_response, code, response.toString(2)));
                 if (error == null && code == 200 && (selected == 0 || selected == 2)) {
@@ -320,7 +323,8 @@ public class BusinessDebugActivity extends AppCompatActivity {
             }
             final ImageCompressor.CompressedImage prepared = image;
             final android.graphics.Bitmap preparedPreview = preview;
-            final String message = failure;
+            final String message = failure == null ? null
+                    : UiSupport.errorMessage(this, failure, R.string.photo_prepare_error);
             runOnUiThread(() -> {
                 if (generation != imageGeneration || isDestroyed()) {
                     if (preparedPreview != null) preparedPreview.recycle();
@@ -389,7 +393,9 @@ public class BusinessDebugActivity extends AppCompatActivity {
             @Override
             public void onFailure(LanApiClient.ApiError error) {
                 if (!visible) return;
-                remotePhotoStatus.setText(getString(R.string.photo_failed, error.message));
+                remotePhotoStatus.setText(getString(R.string.photo_failed,
+                        UiSupport.errorMessage(BusinessDebugActivity.this, error.message,
+                                R.string.ui_image_failed)));
                 setBusy(false);
             }
         });

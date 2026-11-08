@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingVertical="20dp">
+    <TextView android:id="@+id/claim_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiSection"/>
+    <TextView android:id="@+id/claim_state" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiCaption" android:layout_marginTop="8dp"/>
+    <TextView android:id="@+id/claim_applicant" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiBody" android:layout_marginTop="8dp"/>
+    <TextView android:id="@+id/claim_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiCaption" android:layout_marginTop="4dp"/>
+    <LinearLayout android:id="@+id/claim_contents" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView android:id="@+id/claim_proof_value" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiBody" android:layout_marginTop="12dp" android:textIsSelectable="true"/>
+        <TextView android:id="@+id/claim_contact_value" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiBody" android:layout_marginTop="8dp" android:textIsSelectable="true"/>
+    </LinearLayout>
+    <TextView android:id="@+id/claim_note" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiBody" android:layout_marginTop="8dp"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/claim_expand" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_expand" android:layout_marginTop="8dp"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/claim_open_post" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_record_detail" android:layout_marginTop="8dp"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/claim_cancel" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_cancel_claim" android:layout_marginTop="8dp"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/claim_confirm" style="@style/UiButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_confirm_handover" android:layout_marginTop="8dp"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/claim_reject" style="@style/UiOutlineButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_reject" android:layout_marginTop="8dp"/>
+</LinearLayout>

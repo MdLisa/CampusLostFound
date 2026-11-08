@@ -3,6 +3,7 @@ package com.example.campuslostfound.ui;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** A 的临时主机调试页，正式业务页面后续由前端实现。 */
-public class HostActivity extends AppCompatActivity {
+/** 主机专用页面；启停和前台生命周期沿用 A 的串行队列。 */
+public class HostActivity extends ChineseActivity {
     private static final String LOCAL_NETWORK_PERMISSION = "android.permission.ACCESS_LOCAL_NETWORK";
     // 页面重建也共用一个队列，保证旧页面停止完成后才执行新页面启动。
     // 队列随进程存在；页面退出仍会排队停止监听。
@@ -109,10 +109,9 @@ public class HostActivity extends AppCompatActivity {
             try {
                 serverManager.start(getApplicationContext());
             } catch (IOException | RuntimeException e) {
-                error = e.getLocalizedMessage();
-                if (error == null || error.trim().isEmpty()) {
-                    error = getString(R.string.host_unknown_error);
-                }
+                Log.w("CampusHost", "主机开启失败", e);
+                error = UiSupport.errorMessage(this, e.getLocalizedMessage(),
+                        R.string.host_unknown_error);
             }
             final String failure = error;
             runOnUiThread(() -> {

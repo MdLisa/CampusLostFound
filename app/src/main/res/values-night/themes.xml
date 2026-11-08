@@ -1,7 +1,26 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
     <style name="Base.Theme.CampusLostFound" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/ui_primary</item>
+        <item name="colorOnPrimary">@color/ui_on_primary</item>
+        <item name="colorPrimaryContainer">@color/ui_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/ui_on_primary_container</item>
+        <item name="colorSecondaryContainer">@color/ui_primary_container</item>
+        <item name="colorOnSecondaryContainer">@color/ui_on_primary_container</item>
+        <item name="colorSurfaceVariant">@color/ui_surface_container</item>
+        <item name="colorSurfaceContainerLow">@color/ui_surface_container</item>
+        <item name="colorSurfaceContainerLowest">@color/ui_surface</item>
+        <item name="colorSurfaceContainerHigh">@color/ui_surface_container</item>
+        <item name="colorSurfaceContainerHighest">@color/ui_surface_container</item>
+        <item name="colorSecondary">@color/ui_secondary</item>
+        <item name="colorOnSurface">@color/ui_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/ui_secondary</item>
+        <item name="colorSurface">@color/ui_surface</item>
+        <item name="colorSurfaceContainer">@color/ui_surface_container</item>
+        <item name="colorOutline">@color/ui_outline</item>
+        <item name="colorError">@color/ui_error</item>
+        <item name="android:windowBackground">@color/ui_surface</item>
+        <item name="android:colorAccent">@color/ui_primary</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

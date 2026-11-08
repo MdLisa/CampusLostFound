@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="20dp" android:paddingBottom="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_proof_label" android:textAppearance="@style/UiBody" android:id="@+id/claim_proof_label" android:layout_marginTop="8dp"/>
+        <EditText android:importantForAutofill="no" android:id="@+id/claim_proof" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/ui_proof_hint" android:inputType="textMultiLine|textCapSentences" android:layout_marginTop="8dp" android:minLines="3" android:gravity="top"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_contact_label" android:textAppearance="@style/UiBody" android:layout_marginTop="24dp"/>
+        <EditText android:importantForAutofill="no" android:id="@+id/claim_contact" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/ui_contact_hint" android:inputType="text" android:layout_marginTop="8dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_contact_privacy" android:textAppearance="@style/UiCaption" android:layout_marginTop="16dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ui_apply_review" android:textAppearance="@style/UiCaption" android:layout_marginTop="8dp"/>
+    </LinearLayout>
+</ScrollView>

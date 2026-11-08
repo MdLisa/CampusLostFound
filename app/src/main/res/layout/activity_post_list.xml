@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/business_root" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/toolbar" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" app:title="@string/ui_home" app:navigationIcon="@drawable/ic_back" app:navigationContentDescription="@string/ui_back"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="20dp" android:orientation="vertical">
+        <ProgressBar android:id="@+id/page_progress" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="4dp" android:indeterminate="true" android:visibility="gone"/>
+        <TextView android:id="@+id/page_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginVertical="8dp" android:textAppearance="@style/UiCaption" android:accessibilityLiveRegion="polite" android:saveEnabled="false"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/page_retry" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/ui_retry" android:visibility="gone"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/business_body" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="20dp">
+
+            <TextView android:id="@+id/home_identity" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/UiBody" android:layout_marginTop="8dp"/>
+            <EditText android:importantForAutofill="no" android:id="@+id/search_keyword" style="@style/UiInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:hint="@string/ui_search_hint" android:inputType="text" android:singleLine="true" android:maxLength="40"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp">
+                <Spinner android:id="@+id/filter_type" style="@style/UiSpinner" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:contentDescription="@string/ui_type_filter" android:prompt="@string/ui_type_filter"/>
+                <Spinner android:id="@+id/filter_category" style="@style/UiSpinner" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:contentDescription="@string/ui_category_filter" android:prompt="@string/ui_category_filter"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <Spinner android:id="@+id/filter_status" style="@style/UiSpinner" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:contentDescription="@string/ui_status_filter" android:prompt="@string/ui_status_filter"/>
+                <com.google.android.material.button.MaterialButton android:id="@+id/search_posts" style="@style/Widget.Material3.Button.TonalButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/ui_search"/>
+            </LinearLayout>
+        </LinearLayout>
+        <ListView android:id="@+id/post_list" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:clipToPadding="false" android:paddingHorizontal="20dp" android:paddingBottom="12dp" android:divider="@color/ui_surface_container" android:dividerHeight="1dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="20dp" android:paddingVertical="8dp" android:gravity="center_vertical">
+            <com.google.android.material.button.MaterialButton android:id="@+id/my_records" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="56dp" android:text="@string/ui_my_records" app:icon="@drawable/ic_records"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/publish_post" style="@style/UiButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="@string/ui_publish_short" app:icon="@drawable/ic_add"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

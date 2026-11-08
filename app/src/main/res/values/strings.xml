@@ -1,53 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="app_name">CampusLostFound</string>
+    <string name="app_name">校园寻物站</string>
     <string name="main_title">校园寻物站</string>
-    <string name="main_open_host">进入主机测试</string>
-    <string name="host_title">主机连接测试</string>
-    <string name="host_stopped">主机已停止，点击开启主机开始测试</string>
+    <string name="main_open_host">开启主机</string>
+    <string name="host_title">校园主机</string>
+    <string name="host_stopped">主机未开启</string>
     <string name="host_running">主机运行中 · 端口 8080</string>
     <string name="host_starting">正在开启主机…</string>
     <string name="host_stopping">正在停止主机…</string>
     <string name="host_start">开启主机</string>
     <string name="host_stop">停止主机</string>
     <string name="host_refresh">刷新地址</string>
-    <string name="host_address_label">本机局域网地址（有多个时请核对 Wi-Fi 或热点网段）</string>
-    <string name="host_no_address">未找到可展示的局域网 IPv4 地址。请连接 Wi-Fi，或在手机网络设置中核对热点地址后手动测试。</string>
-    <string name="host_test_hint">让另一台手机连接同一 Wi-Fi 或热点，在浏览器中输入上面的地址，并在末尾加上 /api/ping。\n\n例如：http://192.168.1.20:8080/api/ping（示例地址，请替换为本机实际地址）。\n\n测试时保持本页面在前台。切换到其他应用、返回或旋转屏幕后服务会停止，需要手动重新开启。更换网络后请刷新地址。</string>
+    <string name="host_address_label">分享这个地址给同学</string>
+    <string name="host_no_address">未找到可展示的局域网地址。请连接无线网络，或在手机网络设置中核对热点地址后手动测试。</string>
+    <string name="host_test_hint">保持此页面在前台，其他同学才能连接。返回、切换应用或旋转屏幕后，主机会停止；重新进入后请手动开启。换网后请刷新地址。</string>
     <string name="host_permission_request">请允许访问附近设备／局域网，主机才能接收其他手机的连接。</string>
-    <string name="host_permission_denied">未获得局域网访问权限。请重新点击开启并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
+    <string name="host_permission_denied">未获得局域网访问权限。请重新点击开启并授权；如果不再弹窗，请到系统设置 → 应用 → 校园寻物站 → 权限，允许访问附近设备。</string>
     <string name="host_start_failed">主机开启失败：%1$s\n请检查局域网权限及 8080 端口是否被其他服务占用。</string>
-    <string name="host_unknown_error">未知错误</string>
-    <string name="main_step_two">手机主机与客户端连接测试</string>
+    <string name="host_unknown_error">服务暂时不可用</string>
+    <string name="main_step_two">让遗失的物品，回到熟悉的人身边。</string>
     <string name="main_open_client">连接主机</string>
     <string name="client_title">连接主机</string>
-    <string name="client_address_label">主机地址（填写另一台手机显示的地址）</string>
+    <string name="client_address_label">主机地址</string>
     <string name="client_address_hint">http://192.168.1.20:8080</string>
     <string name="client_connect">检测并连接</string>
     <string name="client_idle">尚未检测，请输入地址后点击按钮。</string>
     <string name="client_connecting">正在检测主机，请稍候…</string>
-    <string name="client_connected">连接成功\n应用：%1$s\n协议版本：%2$d\n主机标识：%3$s</string>
+    <string name="client_connected">已连接，可以使用昵称进入。</string>
     <string name="client_failed">连接失败：%1$s</string>
     <string name="client_permission_request">请允许局域网／附近设备权限，才能连接主机。</string>
-    <string name="client_permission_denied">未获得局域网访问权限。请再次点击检测并授权；如果不再弹窗，请到系统设置 → 应用 → CampusLostFound → 权限，允许访问附近设备。</string>
-    <string name="client_hint">请让另一台手机开启主机，并保持主机页面在前台。两台手机需要处于可互访的同一 Wi-Fi 或热点网络。\n\n地址只填 http://IP:端口，不加 /api/ping。本机会记住最近使用的地址；更换地址或主机时会清除旧身份。\n\n连接成功后，首次使用请填写昵称；已有身份会自动验证并恢复。同名昵称仍代表不同用户。</string>
+    <string name="client_permission_denied">未获得局域网访问权限。请再次点击检测并授权；如果不再弹窗，请到系统设置 → 应用 → 校园寻物站 → 权限，允许访问附近设备。</string>
+    <string name="client_hint">请连接可互访的同一无线网络或热点，让主机手机保持页面前台。填写主机当前显示的地址，不加接口路径。更换地址会清除旧身份；相同昵称不能找回旧身份。</string>
     <string name="client_address_changed">地址已修改，请重新检测并连接主机。</string>
-    <string name="session_title">本机用户身份</string>
+    <string name="session_title">怎么称呼你？</string>
     <string name="session_new_user">尚无此主机的身份，请填写昵称进入。</string>
     <string name="session_nickname_hint">昵称（1～20 个字符）</string>
     <string name="session_nickname_invalid">昵称去除首尾空白后须为 1～20 个字符</string>
     <string name="session_create">使用昵称进入</string>
     <string name="session_restore">验证当前身份</string>
     <string name="session_creating">正在创建身份，请稍候…</string>
-    <string name="session_restoring">正在验证已保存的身份…</string>
-    <string name="session_created">身份创建成功\n用户 ID：%1$d\n昵称：%2$s</string>
-    <string name="session_restored">身份恢复成功\n用户 ID：%1$d\n昵称：%2$s</string>
+    <string name="session_restoring">正在恢复你的身份…</string>
+    <string name="session_created">欢迎，%1$s</string>
+    <string name="session_restored">欢迎回来，%1$s</string>
     <string name="session_invalid">原身份已失效，请重新填写昵称。</string>
     <string name="session_failed">身份操作失败：%1$s</string>
     <string name="debug_open">进入业务联调</string>
     <string name="debug_heading">图文业务联调</string>
-    <string name="debug_identity_value">当前用户 ID：%1$d　昵称：%2$s</string>
+    <string name="debug_identity_value">当前用户编号：%1$d　昵称：%2$s</string>
     <string name="debug_identity_failed">身份验证失败：%1$s\n请返回连接页面，重新检测并恢复身份。</string>
-    <string name="debug_instructions">选择操作，填写需要的信息后发送。结果中的 id 是帖子或申请编号，可复制用于后续操作。发布可选择一张图片；查看帖子详情时会加载主机照片。</string>
+    <string name="debug_instructions">选择操作，填写需要的信息后发送。结果中的编号用于标识帖子或申请，可复制用于后续操作。发布可选择一张图片；查看帖子详情时会加载主机照片。</string>
     <string name="debug_operation_label">选择操作</string>
     <string name="debug_type_label">帖子类型</string>
     <string name="debug_category_label">物品分类</string>
@@ -56,10 +57,10 @@
     <string name="debug_title_hint">帖子标题（2～40 字符）</string>
     <string name="debug_description_hint">物品描述（5～500 字符）</string>
     <string name="debug_location_hint">地点（2～60 字符）</string>
-    <string name="debug_post_id">帖子 ID</string>
-    <string name="debug_claim_id">申请 ID</string>
-    <string name="debug_id_hint">填写查询结果中的数字 ID</string>
-    <string name="debug_id_invalid">请输入大于 0 的数字 ID</string>
+    <string name="debug_post_id">帖子编号</string>
+    <string name="debug_claim_id">申请编号</string>
+    <string name="debug_id_hint">填写查询结果中的数字编号</string>
+    <string name="debug_id_invalid">请输入大于 0 的数字编号</string>
     <string name="debug_proof_hint">特征证明或拾获线索（10～300 字符）</string>
     <string name="debug_contact_hint">联系方式（3～80 字符）</string>
     <string name="debug_reason_hint">拒绝原因（2～100 字符）</string>
@@ -67,36 +68,65 @@
     <string name="debug_sample_description">今天中午在图书馆二楼捡到一串钥匙，请说明特征。</string>
     <string name="debug_sample_location">图书馆二楼</string>
     <string name="debug_sample_proof">钥匙有三把并挂着一个蓝色小熊挂件</string>
-    <string name="debug_sample_contact">微信 campus_test</string>
+    <string name="debug_sample_contact">微信 演示联系账号</string>
     <string name="debug_sample_reason">物品特征不匹配</string>
     <string name="debug_send">发送请求</string>
     <string name="debug_sending">正在发送，请稍候…</string>
-    <string name="debug_response">HTTP %1$d\n%2$s</string>
+    <string name="debug_response">响应状态：%1$d\n%2$s</string>
     <string name="debug_network_error">请求失败：%1$s</string>
     <string name="debug_display_error">无法生成或显示请求结果</string>
     <string name="debug_publish_filter_required">发布时请选择具体类型和分类，不能选择“全部”。</string>
     <string-array name="debug_operations">
-        <item>发布帖子（可选图片）</item><item>浏览／搜索帖子</item><item>查看帖子详情</item>
-        <item>我的发布</item><item>提交认领／拾获线索</item><item>我的申请</item>
-        <item>查看帖子收到的申请</item><item>确认完成交接</item><item>拒绝申请</item>
-        <item>取消我的申请</item><item>标记站外找回／归还</item><item>关闭帖子</item>
+        <item>发布帖子（可选图片）</item>
+        <item>浏览／搜索帖子</item>
+        <item>查看帖子详情</item>
+        <item>我的发布</item>
+        <item>提交认领／拾获线索</item>
+        <item>我的申请</item>
+        <item>查看帖子收到的申请</item>
+        <item>确认完成交接</item>
+        <item>拒绝申请</item>
+        <item>取消我的申请</item>
+        <item>标记站外找回／归还</item>
+        <item>关闭帖子</item>
     </string-array>
-    <string-array name="debug_types"><item>全部类型</item><item>招领 FOUND</item><item>寻物 LOST</item></string-array>
+    <string-array name="debug_types">
+        <item>全部类型</item>
+        <item>招领</item>
+        <item>寻物</item>
+    </string-array>
     <string-array name="debug_categories">
-        <item>全部分类</item><item>证件卡片</item><item>电子产品</item><item>钥匙</item>
-        <item>书籍资料</item><item>生活用品</item><item>其他</item>
+        <item>全部分类</item>
+        <item>证件卡片</item>
+        <item>电子产品</item>
+        <item>钥匙</item>
+        <item>书籍资料</item>
+        <item>生活用品</item>
+        <item>其他</item>
     </string-array>
-    <string-array name="debug_public_statuses"><item>全部公开状态</item><item>待解决 OPEN</item><item>已解决 RESOLVED</item></string-array>
-    <string-array name="debug_my_post_statuses"><item>全部状态</item><item>待解决 OPEN</item><item>已解决 RESOLVED</item><item>已关闭 CLOSED</item></string-array>
+    <string-array name="debug_public_statuses">
+        <item>全部公开状态</item>
+        <item>待解决</item>
+        <item>已完成</item>
+    </string-array>
+    <string-array name="debug_my_post_statuses">
+        <item>全部状态</item>
+        <item>待解决</item>
+        <item>已完成</item>
+        <item>已关闭</item>
+    </string-array>
     <string-array name="debug_claim_statuses">
-        <item>全部状态</item><item>待处理 PENDING</item><item>已完成 ACCEPTED</item>
-        <item>已拒绝 REJECTED</item><item>已取消 CANCELLED</item>
+        <item>全部状态</item>
+        <item>待处理</item>
+        <item>已完成交接</item>
+        <item>已拒绝</item>
+        <item>已取消</item>
     </string-array>
     <string name="photo_choose">选择一张图片</string>
     <string name="photo_remove">移除所选图片</string>
     <string name="photo_none_selected">未选择图片，将发布无图帖子。</string>
     <string name="photo_preparing">正在压缩图片，请稍候…</string>
-    <string name="photo_prepared">图片已准备：%1$d × %2$d 像素，%3$d KB</string>
+    <string name="photo_prepared">图片已准备：%1$d × %2$d 像素，%3$d 千字节</string>
     <string name="photo_failed">图片处理失败：%1$s</string>
     <string name="photo_permission_error">无法读取所选图片，请重新选择并允许访问。</string>
     <string name="photo_prepare_error">无法处理所选图片，请换一张图片。</string>
@@ -107,4 +137,168 @@
     <string name="photo_remote_description">从主机加载的帖子照片</string>
     <string name="debug_ready">身份验证后可发送请求，请重新查询需要的记录。</string>
     <string name="debug_write_unknown">上次写操作尚未确认结果，主机可能已经处理。恢复连接后，请先查看“我的发布”“我的申请”或帖子收到的申请，核对结果再决定是否重试。</string>
+    <string name="main_intro">寻找失物、发布招领，在同一校园里互相帮一把。</string>
+    <string name="main_role_hint">日常使用选择“连接主机”；演示时留一台手机开启主机。</string>
+    <string name="enter_home">进入寻物站</string>
+    <string name="ui_back">返回</string>
+    <string name="ui_home">校园寻物站</string>
+    <string name="ui_home_subtitle">发现物品，也传递善意。</string>
+    <string name="ui_my_records">我的记录</string>
+    <string name="ui_publish">发布信息</string>
+    <string name="ui_search_hint">搜索物品标题</string>
+    <string name="ui_search">搜索 / 刷新</string>
+    <string name="ui_type_filter">信息类型</string>
+    <string name="ui_category_filter">物品分类</string>
+    <string name="ui_status_filter">处理状态</string>
+    <string name="ui_loading">正在加载，请稍候…</string>
+    <string name="ui_restoring">正在验证身份…</string>
+    <string name="ui_retry">重新加载</string>
+    <string name="ui_empty_posts">还没有符合条件的信息
+试试其他关键词或筛选条件，也可以发布一条信息。</string>
+    <string name="ui_more">仅显示最新 100 条，可缩小筛选范围</string>
+    <string name="ui_records_count">共 %1$d 条信息</string>
+    <string name="ui_load_failed">加载失败：%1$s</string>
+    <string name="ui_request_failed">暂时无法完成操作，请刷新记录后重试。</string>
+    <string name="ui_network_failed">连接暂时不可用，请检查网络和主机状态后重试。</string>
+    <string name="ui_invalid_identity">身份需要重新验证，请先连接主机。</string>
+    <string name="ui_welcome">你好，%1$s</string>
+    <string name="ui_lost">寻物</string>
+    <string name="ui_found">招领</string>
+    <string name="ui_open">待解决</string>
+    <string name="ui_resolved">已完成</string>
+    <string name="ui_closed">已关闭</string>
+    <string name="ui_pending">待处理</string>
+    <string name="ui_accepted">已完成交接</string>
+    <string name="ui_rejected">已拒绝</string>
+    <string name="ui_cancelled">已取消</string>
+    <string name="ui_post_detail">物品详情</string>
+    <string name="ui_detail_description">物品描述</string>
+    <string name="ui_details">详细信息</string>
+    <string name="ui_post_meta">%1$s · %2$s</string>
+    <string name="ui_owner">发布者：%1$s</string>
+    <string name="ui_created">发布于 %1$s</string>
+    <string name="ui_apply">申请认领</string>
+    <string name="ui_offer">提供拾获线索</string>
+    <string name="ui_received">查看收到的申请</string>
+    <string name="ui_resolve">通过其他途径完成</string>
+    <string name="ui_close">关闭信息</string>
+    <string name="ui_no_photo">发布者未添加照片</string>
+    <string name="ui_image_failed">照片暂时无法加载，文字信息仍可查看。</string>
+    <string name="ui_image_retry">重试照片</string>
+    <string name="ui_not_found">这条信息不存在，请返回列表。</string>
+    <string name="ui_proof_label">物品特征证明</string>
+    <string name="ui_clue_label">拾获线索</string>
+    <string name="ui_proof_hint">说明只有物主知道的特征（10～300 字）</string>
+    <string name="ui_clue_hint">说明你看到或拾获物品的线索（10～300 字）</string>
+    <string name="ui_contact_label">联系方式</string>
+    <string name="ui_contact_hint">电话或微信等（3～80 字）</string>
+    <string name="ui_contact_privacy">证明、线索与联系方式仅对你和发布者可见。</string>
+    <string name="ui_submit">提交申请</string>
+    <string name="ui_cancel">暂不操作</string>
+    <string name="ui_apply_success">申请已提交，后续处理结果可在“我的申请”查看。</string>
+    <string name="ui_view_claims">查看我的申请</string>
+    <string name="ui_busy">正在处理…</string>
+    <string name="ui_unknown_write">操作结果尚未确认，请先查看记录，再决定是否重试。</string>
+    <string name="ui_close_confirm">关闭后将停止受理，待处理申请会被拒绝，且不能重新开启。确定关闭吗？</string>
+    <string name="ui_resolve_confirm">确认已通过其他途径找回或归还？这会完成帖子并拒绝所有待处理申请，不能撤销。</string>
+    <string name="ui_confirm_action">确认操作</string>
+    <string name="ui_action_success">操作成功，已更新最新状态。</string>
+    <string name="ui_title_label">物品标题</string>
+    <string name="ui_description_label">描述与时间</string>
+    <string name="ui_location_label">丢失或拾获地点</string>
+    <string name="ui_publish_note">描述物品特征、时间和地点。联系方式可留待申请后沟通。</string>
+    <string name="ui_title_hint">例如：图书馆捡到一串钥匙</string>
+    <string name="ui_description_hint">描述物品特征及丢失或拾获时间（5～500 字）</string>
+    <string name="ui_location_hint">例如：图书馆二楼</string>
+    <string name="ui_photo_label">物品照片（可选一张）</string>
+    <string name="ui_photo_tip">不添加照片也可以发布；请避免泄露证件号码等隐私。</string>
+    <string name="ui_pick_photo">选择照片</string>
+    <string name="ui_remove_photo">移除照片</string>
+    <string name="ui_publish_submit">确认发布</string>
+    <string name="ui_image_lost">页面已重新创建，如需带图发布，请重新选择照片。</string>
+    <string name="ui_field_invalid">请填写 %1$d～%2$d 个字符</string>
+    <string name="ui_choose_required">请选择具体类型和分类</string>
+    <string name="ui_my_posts">我的发布</string>
+    <string name="ui_my_claims">我的申请</string>
+    <string name="ui_empty_my_posts">你还没有符合条件的发布
+在首页点击“发布信息”，让更多同学看到。</string>
+    <string name="ui_empty_claims">这里还没有申请记录
+在物品详情中提交认领或拾获线索。</string>
+    <string name="ui_record_detail">查看物品详情</string>
+    <string name="ui_cancel_claim">取消申请</string>
+    <string name="ui_cancel_claim_confirm">取消后不能对同一条信息重新申请，确定取消吗？</string>
+    <string name="ui_reject">拒绝申请</string>
+    <string name="ui_confirm_handover">确认归还完成</string>
+    <string name="ui_handover_confirm">只有线下交接已经完成才确认。确认后帖子将完成，其他待处理申请会自动拒绝，且不能撤销。</string>
+    <string name="ui_reason_label">拒绝原因</string>
+    <string name="ui_reason_hint">请说明原因（2～100 字）</string>
+    <string name="ui_reason_submit">确认拒绝</string>
+    <string name="ui_applicant">申请人：%1$s</string>
+    <string name="ui_proof_value">证明 / 线索：%1$s</string>
+    <string name="ui_contact_value">联系方式：%1$s</string>
+    <string name="ui_note_value">处理说明：%1$s</string>
+    <string name="ui_expand">查看申请内容</string>
+    <string name="ui_collapse">收起申请内容</string>
+    <string name="ui_record_state">帖子：%1$s · 申请：%2$s</string>
+    <string name="ui_all">全部</string>
+    <string name="ui_keyword_long">标题关键词最多 40 个字符</string>
+    <string name="ui_forbidden">你没有操作这条记录的权限。</string>
+    <string name="ui_no_actions">此信息已结束受理。</string>
+    <string name="ui_apply_review">请核对信息后提交；同一用户对同一帖子只能申请一次。</string>
+    <string name="ui_filter_apply">应用筛选</string>
+    <string name="ui_options">筛选</string>
+    <string name="ui_switch_host">更换连接需回到连接页；修改地址会清除旧身份。</string>
+    <string name="ui_refreshed">已刷新</string>
+    <string name="ui_lost_choice">我丢了东西</string>
+    <string name="ui_found_choice">我捡到了东西</string>
+    <string-array name="ui_types">
+        <item>全部类型</item>
+        <item>寻物</item>
+        <item>招领</item>
+    </string-array>
+    <string-array name="ui_publish_types">
+        <item>请选择类型</item>
+        <item>我丢了东西</item>
+        <item>我捡到了东西</item>
+    </string-array>
+    <string-array name="ui_categories">
+        <item>全部分类</item>
+        <item>证件卡片</item>
+        <item>电子产品</item>
+        <item>钥匙</item>
+        <item>书籍资料</item>
+        <item>生活用品</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="ui_publish_categories">
+        <item>请选择分类</item>
+        <item>证件卡片</item>
+        <item>电子产品</item>
+        <item>钥匙</item>
+        <item>书籍资料</item>
+        <item>生活用品</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="ui_public_statuses">
+        <item>全部状态</item>
+        <item>待解决</item>
+        <item>已完成</item>
+    </string-array>
+    <string-array name="ui_post_statuses">
+        <item>全部状态</item>
+        <item>待解决</item>
+        <item>已完成</item>
+        <item>已关闭</item>
+    </string-array>
+    <string-array name="ui_claim_statuses">
+        <item>全部状态</item>
+        <item>待处理</item>
+        <item>已完成交接</item>
+        <item>已拒绝</item>
+        <item>已取消</item>
+    </string-array>
+    <string name="ui_refresh">刷新</string>
+    <string name="ui_view_records">查看记录</string>
+    <string name="ui_empty_received">还没有收到申请\n其他同学提交认领或拾获线索后，会显示在这里。</string>
+    <string name="ui_publish_short">发布</string>
 </resources>

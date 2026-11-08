@@ -1,0 +1,16 @@
+<resources>
+    <color name="ui_primary">#85D5BF</color>
+    <color name="ui_on_primary">#00382F</color>
+    <color name="ui_primary_container">#005144</color>
+    <color name="ui_on_primary_container">#B3F1DF</color>
+    <color name="ui_surface">#0F1C18</color>
+    <color name="ui_surface_container">#1C2B25</color>
+    <color name="ui_on_surface">#E0EDE5</color>
+    <color name="ui_secondary">#B4CDC0</color>
+    <color name="ui_outline">#889E92</color>
+    <color name="ui_error">#FFB4AA</color>
+    <color name="ui_lost">#FFCF85</color>
+    <color name="ui_lost_container">#573600</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
