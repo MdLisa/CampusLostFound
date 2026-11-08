@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 /** Private claim queries must only be called after the handler checks identity. */
 public final class ClaimDao {
-    private static final String SELECT = "SELECT c.*,p.title post_title,p.type post_type,p.status post_status,p.owner_id post_owner_id,m.nickname applicant_nickname FROM claims c JOIN posts p ON p.id=c.post_id JOIN members m ON m.id=c.applicant_id";
+    private static final String SELECT = "SELECT c.*,p.title post_title,p.type post_type,p.status post_status,p.is_deleted post_deleted,p.owner_id post_owner_id,m.nickname applicant_nickname FROM claims c JOIN posts p ON p.id=c.post_id JOIN members m ON m.id=c.applicant_id";
 
     public long insert(SQLiteDatabase db, long postId, long applicantId, String proof, String contact, long now) {
         ContentValues v = new ContentValues();
@@ -56,7 +56,9 @@ public final class ClaimDao {
         String note = c.getString(c.getColumnIndexOrThrow("note"));
         return new JSONObject().put("id", c.getLong(c.getColumnIndexOrThrow("id")))
                 .put("postId", c.getLong(c.getColumnIndexOrThrow("post_id")))
-                .put("postTitle", c.getString(c.getColumnIndexOrThrow("post_title")))
+                .put("postTitle", c.getInt(c.getColumnIndexOrThrow("post_deleted")) != 0
+                        ? "该信息已被管理员删除" : c.getString(c.getColumnIndexOrThrow("post_title")))
+                .put("postDeleted", c.getInt(c.getColumnIndexOrThrow("post_deleted")) != 0)
                 .put("postType", c.getString(c.getColumnIndexOrThrow("post_type")))
                 .put("postStatus", c.getString(c.getColumnIndexOrThrow("post_status")))
                 .put("applicant", new JSONObject().put("id", c.getLong(c.getColumnIndexOrThrow("applicant_id")))

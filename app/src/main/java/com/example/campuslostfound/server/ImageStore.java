@@ -88,10 +88,19 @@ public final class ImageStore {
     }
 
     public FileInputStream openPublishedJpeg(String name) throws IOException {
+        return openJpeg(name, false);
+    }
+
+    /** 仅主机本地审查历史内容使用，不由网络路由调用。 */
+    public FileInputStream openAdminJpeg(String name) throws IOException {
+        return openJpeg(name, true);
+    }
+
+    private FileInputStream openJpeg(String name, boolean includeDeleted) throws IOException {
         if (!ImageRules.isFileName(name)) throw notFound();
         boolean published = helper.read(database -> {
             try (Cursor cursor = database.rawQuery(
-                    "SELECT 1 FROM posts WHERE image_name=? LIMIT 1", new String[]{name})) {
+                    "SELECT 1 FROM posts WHERE image_name=?" + (includeDeleted ? "" : " AND is_deleted=0") + " LIMIT 1", new String[]{name})) {
                 return cursor.moveToFirst();
             }
         });

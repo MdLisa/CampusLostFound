@@ -185,7 +185,7 @@
     <string name="ui_no_photo">发布者未添加照片</string>
     <string name="ui_image_failed">照片暂时无法加载，文字信息仍可查看。</string>
     <string name="ui_image_retry">重试照片</string>
-    <string name="ui_not_found">这条信息不存在，请返回列表。</string>
+    <string name="ui_not_found">这条信息不存在或已被管理员删除，请返回列表。</string>
     <string name="ui_proof_label">物品特征证明</string>
     <string name="ui_clue_label">拾获线索</string>
     <string name="ui_proof_hint">说明只有物主知道的特征（10～300 字）</string>

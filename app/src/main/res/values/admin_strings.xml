@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_title">主机管理</string>
+    <string name="admin_local_hint">管理当前主机的数据；切换下方栏目不会停止服务。请妥善保管主机手机。</string>
+    <string name="admin_section_label">管理栏目</string>
+    <string-array name="admin_sections"><item>数据概览</item><item>信息管理</item><item>用户查询</item><item>操作记录</item></string-array>
+    <string name="admin_search_hint">信息搜标题，用户搜昵称或完整 ID</string>
+    <string name="admin_refresh">查询 / 刷新</string>
+    <string name="admin_counts">用户：%1$d\n帖子：%2$d\n待解决：%3$d\n已完成：%4$d\n已关闭：%5$d\n待处理申请：%6$d\n已删除：%7$d</string>
+    <string name="admin_empty">暂无符合条件的记录</string>
+    <string name="admin_count">共显示 %1$d 条记录</string>
+    <string name="admin_more">仅显示最新 100 条，请缩小查询条件</string>
+    <string name="admin_failed">操作失败：%1$s</string>
+    <string name="admin_post_row">#%1$d · %2$s\n%3$s · %4$s\n发布者：%5$s（#%6$d）\n地点：%7$s\n%8$s</string>
+    <string name="admin_member_row">%1$s（#%2$d）\n发布 %3$d 条 · 申请 %4$d 条\n加入时间：%5$s</string>
+    <string name="admin_member_posts">查看该用户的发布</string>
+    <string name="admin_member_claims">查看该用户的申请</string>
+    <string name="admin_member_scope">当前查看：%1$s（#%2$d）</string>
+    <string name="admin_claim_row">#%1$d · %2$s\n帖子：%3$s · 申请：%4$s\n%5$s</string>
+    <string name="admin_log_row">信息 #%1$d · %2$s\n管理员%5$s：%3$s\n%4$s</string>
+    <string name="admin_view_post">查看信息详情</string>
+    <string name="admin_close_post">管理员关闭信息</string>
+    <string name="admin_close_warning">仅用于处理违规或错误信息。关闭后不能重新开启，待处理申请将被拒绝。请输入 2～100 字原因。</string>
+    <string name="admin_close_reason">关闭原因</string>
+    <string name="admin_close_submit">确认关闭</string>
+    <string name="admin_closed">信息已关闭，待处理申请已结束，操作记录已保存。</string>
+    <string name="admin_done">完成</string>
+    <string name="admin_detail">%1$s\n\n%2$s\n\n%3$s</string>
+    <string name="admin_all_members">返回用户列表</string>
+    <string name="admin_host_title">主机管理端</string>
+    <string name="admin_deleted">已删除</string>
+    <string name="admin_delete_post">删除信息</string>
+    <string name="admin_delete_reason">删除原因</string>
+    <string name="admin_delete_submit">确认删除</string>
+    <string name="admin_delete_action">删除</string>
+    <string name="admin_close_action">关闭</string>
+    <string name="admin_delete_warning">删除后，用户端不再展示这条信息的正文和图片，待处理申请会被拒绝。历史申请和后台记录保留，已完成交接记录不变。本版不支持恢复。请输入 2～100 字原因。</string>
+    <string name="admin_deleted_success">信息已删除，用户端不再展示，关联记录已保留。</string>
+    <string-array name="admin_post_statuses"><item>全部状态（含已删除）</item><item>待解决</item><item>已完成</item><item>已关闭</item><item>已删除</item></string-array>
+    <string name="ui_post_deleted">原信息已被管理员删除</string>
+</resources>

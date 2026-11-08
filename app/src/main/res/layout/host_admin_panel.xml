@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/admin_panel" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="28dp">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/admin_title" android:textAppearance="@style/UiSection"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/admin_local_hint" android:textAppearance="@style/UiCaption" android:layout_marginTop="8dp"/>
+    <Spinner android:id="@+id/admin_section" style="@style/UiSpinner" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:entries="@array/admin_sections" android:contentDescription="@string/admin_section_label"/>
+    <LinearLayout android:id="@+id/admin_filters" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="vertical">
+        <EditText android:id="@+id/admin_keyword" style="@style/UiInput" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="@string/admin_search_hint"
+            android:inputType="text" android:singleLine="true" android:maxLength="40" android:importantForAutofill="no"/>
+        <LinearLayout android:id="@+id/admin_post_filters" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <Spinner android:id="@+id/admin_type" style="@style/UiSpinner" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:contentDescription="@string/ui_type_filter"/>
+            <Spinner android:id="@+id/admin_category" style="@style/UiSpinner" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:contentDescription="@string/ui_category_filter"/>
+            <Spinner android:id="@+id/admin_status" style="@style/UiSpinner" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:contentDescription="@string/ui_status_filter"/>
+        </LinearLayout>
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton android:id="@+id/admin_refresh" style="@style/UiOutlineButton"
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/admin_refresh"/>
+    <ProgressBar android:id="@+id/admin_progress" style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent" android:layout_height="4dp" android:indeterminate="true" android:visibility="gone"/>
+    <TextView android:id="@+id/admin_message" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textAppearance="@style/UiCaption" android:layout_marginVertical="12dp" android:accessibilityLiveRegion="polite"
+        android:saveEnabled="false"/>
+    <LinearLayout android:id="@+id/admin_results" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="vertical"/>
+</LinearLayout>

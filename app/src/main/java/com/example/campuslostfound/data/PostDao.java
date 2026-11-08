@@ -25,13 +25,23 @@ public final class PostDao {
     }
 
     public JSONObject get(SQLiteDatabase db, long id) throws JSONException {
-        try (Cursor c = db.rawQuery(SELECT + " WHERE p.id=?", new String[]{Long.toString(id)})) {
+        try (Cursor c = db.rawQuery(SELECT + " WHERE p.id=? AND p.is_deleted=0", new String[]{Long.toString(id)})) {
             return c.moveToFirst() ? row(c) : null;
         }
     }
 
+    /** 本地主机管理查询可查看被软删除的原始记录，不用于普通 HTTP 详情。 */
+    public JSONObject getForAdmin(SQLiteDatabase db, long id) throws JSONException {
+        try (Cursor c = db.rawQuery(SELECT + " WHERE p.id=?", new String[]{Long.toString(id)})) {
+            if (!c.moveToFirst()) return null;
+            int deletedAt = c.getColumnIndexOrThrow("deleted_at");
+            return row(c).put("deleted", c.getInt(c.getColumnIndexOrThrow("is_deleted")) != 0)
+                    .put("deletedAt", c.isNull(deletedAt) ? JSONObject.NULL : c.getLong(deletedAt));
+        }
+    }
+
     public JSONObject list(SQLiteDatabase db, Long ownerId, String type, String category, String keyword, String status) throws JSONException {
-        StringBuilder sql = new StringBuilder(SELECT + " WHERE 1=1");
+        StringBuilder sql = new StringBuilder(SELECT + " WHERE p.is_deleted=0");
         java.util.ArrayList<String> args = new java.util.ArrayList<>();
         if (ownerId != null) add(sql, args, "p.owner_id=?", Long.toString(ownerId));
         else if (status == null) sql.append(" AND p.status IN ('OPEN','RESOLVED')");
